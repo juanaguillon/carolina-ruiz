@@ -51,7 +51,7 @@ if (!is_ajax()) {
 
 	
 
-		<button name="woocommerce_checkout_place_order" type="submit" class="btn btn-lg btn-color" id="place_order" value="Realizar Pedido" data-value="Realizar Pedido">Realizar Pedido</button>'
+		<button name="woocommerce_checkout_place_order" type="submit" class="btn btn-lg btn-color w-100" id="place_order" value="Realizar Pedido" data-value="Realizar Pedido">Realizar Pedido</button>
 
 		<?php do_action('woocommerce_review_order_after_submit'); ?>
 

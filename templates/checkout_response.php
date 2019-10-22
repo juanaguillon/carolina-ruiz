@@ -98,60 +98,69 @@ if (isset($_REQUEST['lapPaymentMethod'])) {
 
 if (strtoupper($signature) == strtoupper($signature_md5)) {
   ?>
-  <center>
-    <table style="width: 42%; margin-top: 100px;">
-      <tr align="center">
+  <div class="checkout-container">
+    
+    <div class="datos-compra">
+    <h2><?php echo $agradecimiento ?></h2>
+    <table>
+      <thead>
+      <tr >
         <th colspan="2">DATOS DE LA COMPRA</th>
       </tr>
-      <tr align="right">
-        <td>Estado de la transacci&oacute;n</td>
+      
+      </thead>
+      <tbody>
+      <tr>
+        <td><b>Estado de la transacci&oacute;n</b></td>
         <td><?php echo $estadoTx; ?></td>
       </tr>
-      <tr align="right">
-        <td>ID de la transacci&oacute;n</td>
+      <tr>
+        <td><b>ID de la transacci&oacute;n</b></td>
         <td><?php echo $transactionId; ?></td>
       </tr>
-      <tr align="right">
-        <td>Referencia de la venta</td>
+      <tr>
+        <td><b>Referencia de la venta</b></td>
         <td><?php echo $reference_pol; ?></td>
       </tr>
-      <tr align="right">
-        <td>Referencia de la transacci&oacute;n</td>
+      <tr>
+        <td><b>Referencia de la transacci&oacute;n</b></td>
         <td><?php echo $referenceCode; ?></td>
       </tr>
       <?php
         if ($pseBank != null) {
           ?>
-        <tr align="right">
-          <td>CUS</td>
+        <tr>
+          <td><b>CUS</b></td>
           <td><?php echo $cus; ?> </td>
         </tr>
-        <tr align="right">
-          <td>Banco</td>
+        <tr>
+          <td><b>Banco</b></td>
           <td><?php echo $pseBank; ?> </td>
         </tr>
       <?php
         }
         ?>
-      <tr align="right">
-        <td>Valor total</td>
+      <tr>
+        <td><b>Valor total</b></td>
         <td>$<?php echo $value; ?> </td>
       </tr>
-      <tr align="right">
-        <td>Moneda</td>
+      <tr>
+        <td><b>Moneda</b></td>
         <td><?php echo $currency; ?></td>
       </tr>
-      <tr align="right">
-        <td>Descripción</td>
+      <tr>
+        <td><b>Descripción</b></td>
         <td><?php echo $description; ?></td>
       </tr>
-      <tr align="right">
-        <td>Entidad</td>
+      <tr>
+        <td><b>Entidad</b></td>
         <td><?php echo $lapPaymentMethod; ?></td>
       </tr>
+      </tbody>
     </table>
-    <h1><?php echo $agradecimiento ?></h1>
-  </center>
+    <a href="#" class="btn btn-lg btn-color">Volver a tienda</a>
+    </div>
+  </div>
 <?php
 } else {
   echo '<h1><center>La petici&oacute;n es incorrecta! Hay un error en la firma digital.</center></h1>';

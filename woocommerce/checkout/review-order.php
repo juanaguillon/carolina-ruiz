@@ -18,12 +18,12 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 <table class="shop_table woocommerce-checkout-review-order-table">
-	<thead>
+	<!-- <thead>
 		<tr>
 			<th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
 			<th class="product-total"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></th>
 		</tr>
-	</thead>
+	</thead> -->
 	<tbody>
 		<?php
 		do_action( 'woocommerce_review_order_before_cart_contents' );
@@ -53,7 +53,7 @@ defined( 'ABSPATH' ) || exit;
 	<tfoot>
 
 		<tr class="cart-subtotal">
-			<th><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></th>
+			<td><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></td>
 			<td><?php wc_cart_totals_subtotal_html(); ?></td>
 		</tr>
 

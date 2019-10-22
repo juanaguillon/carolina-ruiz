@@ -113,7 +113,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Pt Serif", serif;
-  color: #7a7a7a;
+  color:#5d5d5d;
   font-size: 15px;
   line-height: 1.5;
   font-smoothing: antialiased;
@@ -4831,6 +4831,13 @@ textarea {
   -ms-transition: border-color 0.3s ease-in-out;
   -o-transition: border-color 0.3s ease-in-out;
   transition: border-color 0.3s ease-in-out;
+}
+
+select{
+  height: 47px !important;
+    line-height: 47px !important;
+    padding: 0 16px !important;
+    border: 2px solid #e3e3e3 !important; 
 }
 
 textarea#comment {
