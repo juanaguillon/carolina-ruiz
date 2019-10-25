@@ -81,13 +81,15 @@
 
                 <ul class="nav navbar-nav local-scroll text-center">
                   <li class="active"><a href="<?php echo esc_url(home_url()) ?>">Home</a></li>
-                  <li class="active">
+                  <li>
                     <a href="#owl-promo">Sobre mi</a>
                   </li>
                   <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="colecciones.html">Colecciones
                       <span class="revicon-down-open"></span></a>
                     <ul class="dropdown-menu menu-nav-desplegable">
+
+                      <li><a href="<?= get_permalink(177) ?>">Todas</a></li>
                       <li><a href="#">Street</a></li>
                       <li><a href="#">Casual</a></li>
                       <li><a href="#">Elegante</a></li>
@@ -122,62 +124,10 @@
                     <i class="icon_cart_alt"></i>
                     <i id="arrow_cart" class="arrow_carrot-down"></i>
                   </a>
-                  <div class="list_cart_header">
-                    <?php
-                    if (WC()->cart->get_cart_contents_count() !== 0) :
-                      ?>
-                      <ul>
-
-                        <?php
-                          foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) :
-                            $_product   = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-                            $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
-                            $permalink = $_product->get_permalink();
-
-                            if ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_cart_item_visible', true, $cart_item, $cart_item_key)) :
-                              ?>
-                            <li>
-                              <div class="list_header_thumb">
-                                <img src="<?= wp_get_attachment_image_url($_product->get_image_id(), "thumbnial") ?>" alt="">
-                              </div>
-                              <div class="list_header_inf">
-                                <span class="list_header_title">
-                                  <?= wp_kses_post($_product->get_name())  ?>
-                                </span>
-
-                                <span class="list_header_price">
-                                  <?= apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); ?>
-                                </span>
-                                <span class="list_header_quantity">
-                                  <?= "X" . $cart_item['quantity']; ?>
-                                </span>
-                              </div>
-                            </li>
-                        <?php
-                            endif;
-                          endforeach;
-                          ?>
-                      </ul>
-                      <div class="mt-10 text-center">
-                        <a href="<?php echo esc_url(get_permalink(7)) ?>" class="btn btn-sm btn-color">Ver Carrito</a>
-                      </div>
-
-
-
-                    <?php
-                    else :
-                      ?>
-                      <div class="list_header_empty">
-                        <div class="icon_error-circle_alt"></div>
-                        <span>No tienes productos en tu carrito actualmente.</span>
-                      </div>
-
-                    <?php
-                    endif; // Endif check if cart is´t empty.
-
-                    ?>
-
+                  <div id="mini_cart_wrap">
+                    <?php wc_get_template('cart/mini-cart.php'); ?>
                   </div>
+
                 </li>
                 <li>
                   <a href="#" class="boton-buscar"><i class="icon_search"></i></a>

@@ -179,16 +179,8 @@
         <p class="subheading text-center">Conoce nuestra colección Resort</p>
       </div>
     </div>
-    
-    <div class="category-product-filter">
-      <ul>
-        <li><span class="btn iso-filter" data-filter="*">Todo</span></li>
-        <li><span class="btn iso-filter" data-filter=".street">Street</span></li>
-        <li><span class="btn iso-filter" data-filter=".casual">Casual</span></li>
-        <li><span class="btn iso-filter" data-filter=".elegante">Elegante</span></li>
-        <li><span class="btn iso-filter" data-filter=".noche">Noche</span></li>
-      </ul>
-    </div>
+
+    <?php get_template_part("content", "product_filtering"); ?>
 
     <div class="grid-4-col grid grid-wide grid-gutter grayscale">
       <?php

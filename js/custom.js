@@ -60,17 +60,71 @@ function whenClickOnTallasAndColors() {
 }
 
 /**
+ * Desplegar colecciones en la página de colecciones
+ */
+function desplegarColleciones() {
+  $(".desplegar-colecciones").click(function() {
+    $(".coleccion-selector .coleccion-lista").toggleClass(
+      "coleccion-lista-active"
+    );
+
+    if ($(this).hasClass("fa-angle-down")) {
+      $(this).removeClass("fa-angle-down");
+      $(this).addClass("fa-angle-up");
+    } else {
+      $(this).addClass("fa-angle-down");
+      $(this).removeClass("fa-angle-up");
+    }
+  });
+}
+
+/**
  * CUando se haga click en el carrito del header
  */
 function whenClickOnHeaderCart() {
-  $(".cart_list").click(function() {
+  $(".cart_list").click(function(e) {
+    e.stopPropagation();
     $(this).toggleClass("active");
     $("#arrow_cart").toggleClass("arrow_carrot-down");
     $("#arrow_cart").toggleClass("arrow_carrot-up");
   });
-  $(".list_cart_header").click(function(e){
-    e.stopPropagation()
-  })
+  $("#mini_cart_wrap").click(function(e) {
+    e.stopPropagation();
+  });
+  $(".mini_cart_wrap").click(function(e) {
+    e.stopPropagation();
+  });
+}
+
+/**
+ * En ocasiones será necesario ocultar un elemento cuando demos click en el body, pero evitar este comportameinto cuando se de click en el mismo elemento. Añada el selector del elemento y la clase a modificar que desea que obtenga dicho comportamiento
+ */
+function hideWhenClickOnBody() {
+  $("body").click(function() {
+    $(".cart_list").removeClass("active");
+    $("#arrow_cart").removeClass("arrow_carrot-up");
+    $("#arrow_cart").addClass("arrow_carrot-down");
+  });
+
+  // var elementsToHide = {
+  //   // selector : clase css
+  //   ".cart_list": "active"
+  // };
+  // for (var key in elementsToHide) {
+  //   if (object.hasOwnProperty(key)) {
+  //     $(key).click(function(e) {
+  //       e.stopPropagation();
+  //     });
+  //   }
+  // }
+
+  // $("body").click(function() {
+  //   for (var key in elementsToHide) {
+  //     if (object.hasOwnProperty(key)) {
+  //       $(key).removeClass(object[key]);
+  //     }
+  //   }
+  // });
 }
 
 /**
@@ -82,14 +136,23 @@ function addProductToCartAjax() {
     var talla = $("#key_talla_val").val();
     var quantity = $("#key_quant_val").val();
     var color = $("#key_color_val").val();
-    var prodID = $(this).data("idprod");
+    var variation = $("#key_variattion_id").val();
+    var currentButton = $(this);
+
+    var prodID = currentButton.data("idprod");
+    currentButton.addClass("btn-loading");
+    currentButton.prop("disabled", true);
     key_quant_val;
     key_color_val;
     $.ajax({
       url: ajaxURL,
       method: "POST",
       success: function(data) {
-        console.log(data);
+        $("#mini_cart_wrap").html(
+          data["fragments"]["div.widget_shopping_cart_content"]
+        );
+        currentButton.prop("disabled", false);
+        currentButton.removeClass("btn-loading");
       },
       data: {
         action: "woocommerce_ajax_add_to_cart",
@@ -98,7 +161,7 @@ function addProductToCartAjax() {
         quantity: quantity,
         talla: talla,
         color: color,
-        variation_id: 0
+        variation_id: variation
       }
     });
   });
@@ -109,4 +172,7 @@ $(document).ready(function() {
   whenClickOnTallasAndColors();
   addProductToCartAjax();
   whenClickOnHeaderCart();
+  hideWhenClickOnBody();
+
+  desplegarColleciones();
 });

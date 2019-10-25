@@ -24,9 +24,16 @@ global $product;
 if (empty($product) || !$product->is_visible()) {
 	return;
 }
+
+$terms = get_the_terms($product->ID, 'product_cat');
+$product_cat_id = "";
+foreach ($terms as $term) {
+	$product_cat_id .= " " . $term->slug;
+}
+
 ?>
 
-<div class="work-item grid-item nuevo street">
+<div class="work-item grid-item nuevo<?php echo $product_cat_id; ?>">
 	<div class="work-img">
 
 		<?php

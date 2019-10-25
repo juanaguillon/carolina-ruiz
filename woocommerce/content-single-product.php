@@ -33,11 +33,13 @@ if (post_password_required()) {
 	echo get_the_password_form(); // WPCS: XSS ok.
 	return;
 }
+
+$availableVariations = $product->get_available_variations();
+
 ?>
 
 <div class="row contenido-producto res-mb">
 	<div id="product-<?php the_ID(); ?>" class="col-md-7 slider-producto">
-
 		<div class="product-slider row d-flex m-0">
 
 			<div class="clearfix col-md-1 col-sm-12 p-0-temp">
@@ -69,9 +71,7 @@ if (post_password_required()) {
 						</div>
 					</div>
 
-					<!-- /carousel-inner -->
 				</div>
-				<!-- /thumbcarousel -->
 
 			</div>
 			<div id="carousel" class="carousel slide col-md-11 col-sm-12 p-0-temp slider-imagenes-produtos" data-ride="carousel">
@@ -122,10 +122,13 @@ if (post_password_required()) {
 
 		<?php
 
-		$productAttrs = $product->get_attributes();
-		$tallas = $productAttrs["talla"]["options"];
-		$colors = $productAttrs["color"]["options"];
+		$tallas = $product->get_attribute('pa_talla');
+		$colors = $product->get_attribute('pa_color');
+		$colors = explode(", ", $colors);
+		$tallas = explode(", ", $tallas);
 		// printcode($tallas);
+		// printcode($tallas);
+		// printcode($colors);
 		?>
 		<div class="item-detalle talla detalles">
 			<span>Talla</span>
@@ -154,20 +157,25 @@ if (post_password_required()) {
 			<div class="item-detalle color detalles col-md-6">
 				<span>Color</span>
 				<ul id="list_colors">
-					<?php foreach ($colors as $keyColor => $color) : ?>
-						<li class="<?= $keyColor == 0 ? "active" : "" ?>" data-key_color="<?= $color ?>" style="background:<?= $color ?>"></li>
+					<?php foreach ($colors as $keyColor => $color) :
+						$colorName = trim(explode("|", $color)[0]);
+						$colorHex = trim(explode("|", $color)[1]);
+						?>
+						<li class="<?= $keyColor == 0 ? "active" : "" ?>" data-key_color="<?= $colorName ?>" style="background:<?= $colorHex ?>"></li>
 					<?php endforeach; ?>
 				</ul>
-				<input type="hidden" id="key_color_val" value="<?= $colors[0] ?>">
+				<input type="hidden" id="key_color_val" value="<?= trim(explode("|", $colors[0])[0]) ?>">
+				<input type="hidden" id="key_variattion_id" value="<?= $availableVariations[0]["variation_id"] ?>">
 			</div>
 		</div>
 
 
 		<div class="add_actions">
-			<button data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-comprar add_action_cart">
-				<i class="fa fa-shopping-cart"></i>
-			</button>
-			<a href="#" class="btn btn-lg btn-color btn-comprar add_action_buy">Comprar</a>
+
+			<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-color btn-comprar add_action_cart">
+				<div class="loader"></div>
+				<i class="fa fa-shopping-cart"></i>Añadir a Carrito
+			</a>
 		</div>
 		<div class="compartir-producto">
 			<ul>
