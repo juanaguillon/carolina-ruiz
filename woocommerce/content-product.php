@@ -53,7 +53,25 @@ foreach ($terms as $term) {
 	</div>
 	<div class="nombre-producto">
 		<h4><?php echo wp_kses_post($product->get_name()); ?></h4>
-		<span class="valor-precio-2 text-center">$<?php echo number_format(wp_kses_post($product->get_price()), "0", ".", "."); ?></span>
+		<?php
+
+		if ($product->product_type == 'variable') {
+			$available_variations = $product->get_available_variations();
+			$count = count($available_variations) - 1;
+			$variation_id = $available_variations[$count]['variation_id']; // Getting the variable id of just the 1st product. You can loop $available_variations to get info about each variation.
+			$variable_product1 = new WC_Product_Variation($variation_id);
+			$regular_price = $variable_product1->regular_price;
+			$sales_price = $variable_product1->sale_price;
+		} else if ($product->product_type == "simple") {
+			$regular_price = $product->get_price()
+			?>
+		<?php
+		}
+
+		?>
+		<span class="valor-precio-2 text-center">$<?php echo number_format(wp_kses_post($regular_price), "0", ".", "."); ?></span>
+
+
 		<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn btn-color btn-comprar-prdt">Comprar</a>
 	</div>
 </div>

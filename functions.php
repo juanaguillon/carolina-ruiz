@@ -1,5 +1,7 @@
 <?php
 
+include "includes/caror-post-types.php";
+
 function printcode($code)
 {
   echo "<pre>" . print_r($code, true) . "</pre>";
