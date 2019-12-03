@@ -81,6 +81,26 @@ function desplegarColleciones() {
 }
 
 /**
+ * Crear el scroll a la seccion especifica en caso de enviar un query Param.
+ * Por ejemplo, en el index, se crea un link a diferente secciones. Esta funcion hará el scroll animado.
+ */
+function makeScrollIfExistsTheQueryParam() {
+  var headerHeight = 90;
+  var urlParams = new URLSearchParams(window.location.search);
+  var sectionParam = urlParams.get("section");
+  if (sectionParam) {
+    console.log(sectionParam);
+    var body = $("html, body");
+    body
+      .stop()
+      .animate(
+        { scrollTop: $("#" + sectionParam).offset().top - 50 },
+        500,
+        "swing"
+      );
+  }
+}
+/**
  * CUando se haga click en el carrito del header
  */
 function whenClickOnHeaderCart() {
@@ -310,7 +330,7 @@ function makeSrollSections() {
   });
 }
 
-$(document).ready(function() {
+window.onload = function() {
   initPlugins();
   whenClickOnTallasAndColors();
   sendContactMessage();
@@ -318,7 +338,8 @@ $(document).ready(function() {
   whenClickOnHeaderCart();
   hideWhenClickOnBody();
   makeSrollSections();
+  makeScrollIfExistsTheQueryParam();
 
   desplegarColleciones();
   changeFilterSelectOnCollection();
-});
+};

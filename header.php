@@ -103,14 +103,18 @@
 
                   <li class="<?= is_home() || is_front_page() ? "active" : "" ?>"><a href="<?php echo esc_url(home_url()) ?>"><?= $headText1 ?></a></li>
                   <li class="">
-                    <a class="scroll_page_link" data-scroll="sobre_mi"><?= $headText2 ?></a>
+                    <?php if (is_front_page()) : ?>
+                      <a class="scroll_page_link" data-scroll="sobre_mi"><?= $headText2 ?></a>
+                    <?php else : ?>
+                      <a href="<?php echo pll_home_url() . "?section=sobre_mi" ?>"><?= $headText2 ?></a>
+                    <?php endif; ?>
                   </li>
                   <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="<?= get_permalink(177) ?>"><?= $headText3 ?>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href=""><?= $headText3 ?>
                       <span class="revicon-down-open"></span>
                     </a>
                     <ul class="dropdown-menu menu-nav-desplegable">
-                      <li><a href="<?= get_permalink(177) ?>"><?= $headText3All ?></a></li>
+                      <li><a href="<?= get_permalink(pll_get_post(177)) ?>"><?= $headText3All ?></a></li>
                       <?php
                       $categoriasWP = get_terms(array(
                         "taxonomy" => "product_cat"
@@ -127,7 +131,12 @@
                     <a href="<?php echo get_permalink(191) ?>">Blog</a>
                   </li>
                   <li>
-                    <a class="scroll_page_link" data-scroll="contact"><?= $headText5 ?></a>
+
+                    <?php if (is_front_page()) : ?>
+                      <a class="scroll_page_link" data-scroll="contact"><?= $headText5 ?></a>
+                    <?php else : ?>
+                      <a href="<?php echo pll_home_url() . "?section=contact" ?>"><?= $headText5 ?></a>
+                    <?php endif; ?>
                   </li>
 
                 </ul>
@@ -137,7 +146,7 @@
             <div class="menu-socials hidden-sm hidden-xs">
               <ul>
 
-                
+
                 <li class="spanish <?= caror_is_language("es") ? "active" : "" ?>">
                   <a href="<?= pll_home_url("es") ?>">ES</a>
                 </li>

@@ -108,12 +108,25 @@ $availableVariations = $product->get_available_variations();
 
 	</div>
 
+	<?php
+	$disponibildad = "Disponibilidad";
+	$exists = "Existen";
+	$unidades = "Unidades";
+	$agotado = "Agotado";
+	if (caror_is_language("en")) {
+		$disponibildad = "Availability";
+		$exists = "Exists";
+		$unidades = "Availability";
+		$agotado = "Exhausted";
+	}
+	?>
+
 
 	<div class="col-md-5 detalles-productos">
 
 		<h2><?php echo $product->get_title(); ?></h2>
 		<div class="referencia item-detalle m-0">
-			<span>Referencia:</span><span> <?php echo $product->get_sku() ?></span>
+			<span>Ref:</span><span> <?php echo $product->get_sku() ?></span>
 
 		</div>
 		<div class="precio item-detalle">
@@ -121,34 +134,56 @@ $availableVariations = $product->get_available_variations();
 			<?php
 			$quantityProduct = $product->get_stock_quantity();
 			if ($quantityProduct === null) : ?>
-				<span class="valor-cantidad">Disponibilidad: Existen Unidades</span>
+				<span class="valor-cantidad"><?= $disponibildad ?>: <?= "{$exists} {$unidades}" ?></span>
 			<?php elseif ($quantityProduct > 0) : ?>
-				<span class="valor-cantidad">Disponibilidad: <?php echo $quantityProduct; ?> Unidades</span>
+				<span class="valor-cantidad"><?= $disponibildad ?>: <?php echo "{$quantityProduct} {$unidades}" ?></span>
 			<?php else : ?>
-				<span class="valor-cantidad">Disponibilidad: <strong style="color: #9c0000;font-weight: bold;">Agotado</strong> </span>
+				<span class="valor-cantidad"><?= $disponibildad ?>: <strong style="color: #9c0000;font-weight: bold;"><?= $agotado ?></strong> </span>
 			<?php endif; ?>
 		</div>
 
 		<?php
 
 		$tallas = $product->get_attribute('pa_talla');
-		$colors = $product->get_attribute('pa_color');
-		$colors = explode(", ", $colors);
-		$tallas = explode(", ", $tallas);
+		$colors = get_the_terms(get_the_ID(), "pa_color");
+		if (trim($tallas) !== "") {
+			$tallas = explode(", ", $tallas);
+		} else {
+			$tallas = array();
+		}
+
+		$talla = "Talla";
+		$giatalla = "Guía de tallas";
+		$cantidad = "Cantidad";
+		$comprar = "Comprar";
+		$anadirCarrrito = "Añadir a carrito";
+
+		if (caror_is_language("en")) {
+			$talla = "Size";
+			$giatalla = "Size guide";
+			$cantidad = "Quantity";
+			$comprar = "Buy";
+			$anadirCarrrito = "Add to cart";
+		}
+
 		?>
-		<div class=" item-detalle talla detalles">
-			<span>Talla</span>
-			<ul id="list_tallas">
-				<?php foreach ($tallas as $tkey => $talla) : ?>
-					<li><a class="<?= $tkey == 0 ? "active" : "" ?>" href="#" data-key_talla="<?= $talla ?>"><?= $talla ?></a></li>
-				<?php endforeach; ?>
-			</ul>
-			<input type="hidden" id="key_talla_val" value="<?= $tallas[0] ?>">
-			<a href="#" class="boton-tallas">Guia de tallas</a>
-		</div>
+
+		<?php if (count($tallas) > 0) : ?>
+			<div class=" item-detalle talla detalles">
+				<span><?= $talla ?></span>
+				<ul id="list_tallas">
+
+					<?php foreach ($tallas as $tkey => $talla) : ?>
+						<li><a class="<?= $tkey == 0 ? "active" : "" ?>" href="#" data-key_talla="<?= $talla ?>"><?= $talla ?></a></li>
+					<?php endforeach; ?>
+				</ul>
+				<input type="hidden" id="key_talla_val" value="<?= $tallas[0] ?>">
+				<a href="#" class="boton-tallas"><?= $giatalla ?></a>
+			</div>
+		<?php endif; ?>
 		<div class="row">
 			<div class="item-detalle cantidad col-md-6">
-				<span>Cantidad</span>
+				<span><?= $cantidad ?></span>
 				<div class="input-group number-spinner cantidad-spiner">
 					<span class="input-group-btn">
 						<button class="btn" data-dir="dwn"><span class="glyphicon glyphicon-minus"></span></button>
@@ -160,19 +195,23 @@ $availableVariations = $product->get_available_variations();
 				</div>
 
 			</div>
-			<div class="item-detalle color detalles col-md-6">
-				<span>Color</span>
-				<ul id="list_colors">
-					<?php foreach ($colors as $keyColor => $color) :
-						$colorName = trim(explode("|", $color)[0]);
-						$colorHex = trim(explode("|", $color)[1]);
-						?>
-						<li class="<?= $keyColor == 0 ? "active" : "" ?>" data-key_color="<?= $colorName ?>" style="background:<?= $colorHex ?>"></li>
-					<?php endforeach; ?>
-				</ul>
-				<input type="hidden" id="key_color_val" value="<?= trim(explode("|", $colors[0])[0]) ?>">
-				<input type="hidden" id="key_variattion_id" value="<?= $availableVariations[0]["variation_id"] ?>">
-			</div>
+			<?php if ($colors && count($colors) > 0) : ?>
+				<div class="item-detalle color detalles col-md-6">
+					<span>Color</span>
+					<ul id="list_colors">
+						<?php foreach ($colors as $keyColor => $color) :
+								$colorProd = caror_explode_color_name($color);
+								$colorName = $colorProd["name"];
+								$colorHex = $colorProd["hex"];
+								?>
+							<li class="<?= $keyColor == 0 ? "active" : "" ?>" data-key_color="<?= $colorName ?>" style="background:<?= $colorHex ?>"></li>
+						<?php endforeach; ?>
+					</ul>
+					<input type="hidden" id="key_color_val" value="<?= trim(explode("|", $colors[0])[0]) ?>">
+					<input type="hidden" id="key_variattion_id" value="<?= $availableVariations[0]["variation_id"] ?>">
+				</div>
+
+			<?php endif; ?>
 		</div>
 
 
@@ -182,11 +221,11 @@ $availableVariations = $product->get_available_variations();
 
 				<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-color btn-comprar add_action_cart">
 					<div class="loader"></div>
-					<i class="fa fa-shopping-cart"></i>Añadir a Carrito
+					<i class="fa fa-shopping-cart"></i><?= $comprar ?>
 				</a>
 				<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-comprar add_action_cart go_to_checkout" style="margin-left: 10px;">
 					<div class="loader" style="display: none;"></div>
-					Comprar
+					<?= $anadirCarrrito ?>
 				</a>
 			</div>
 

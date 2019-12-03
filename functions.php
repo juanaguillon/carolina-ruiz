@@ -58,17 +58,24 @@ function caror_get_single_blog($postBlog)
  * @param string $colorName Nombre de color a dar formato
  * @return array ["name" => "Púrpura", "hex" => "#8F49FF"] 
  */
-function caror_explode_color_name($colorName)
+function caror_explode_color_name($colorTerm)
 {
-  $colorName = explode("|", trim($colorName));
-  return array(
-    "hex" => $colorName[1],
-    "name" => $colorName[0]
+  $retruned = array(
+
+    "name" => $colorTerm->name
   );
+  if (caror_is_language("en")) {
+    $colorTerm = get_term(pll_get_term($colorTerm->term_id, "es"), "pa_color");
+    $retruned["hex"] = get_field("color_de_producto", $colorTerm);
+    // printcode($colorTerm);
+  } else {
+    $retruned["hex"] = get_field("color_de_producto", $colorTerm);
+  }
+
+  return $retruned;
 }
 
 add_action('after_setup_theme', 'caror_init');
-
 
 add_action('wp_ajax_woocommerce_ajax_add_to_cart', 'woocommerce_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_woocommerce_ajax_add_to_cart', 'woocommerce_ajax_add_to_cart');
@@ -135,6 +142,7 @@ function getVariationProduct($prodct)
     "regular" => $regular_price,
   );
 }
+
 
 /**
  * Obtener los custom fields de ACF, dependiendo de el lengaje actual.

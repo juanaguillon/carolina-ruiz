@@ -6,7 +6,7 @@
     <div class="col-md-12">
       <div class="container-fluid">
 
-        <div class="row heading head-title">
+        <!-- <div class="row heading head-title">
           <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 coleccion-selector">
             <h2 class="text-center bottom-line">Colección 2019 <i class="fa fa-angle-down desplegar-colecciones"></i>
             </h2>
@@ -26,7 +26,7 @@
 
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="filtros-coleccion">
           <ul>
             <li>
@@ -67,7 +67,7 @@
                   <?php
                   $colors = get_terms("pa_color");
                   foreach ($colors  as $color) :
-                    $colorName = caror_explode_color_name($color->name)
+                    $colorName = caror_explode_color_name($color)
                     ?>
                     <option value="<?= $color->slug ?>"><?= $colorName["name"] ?></option>
                   <?php endforeach; ?>

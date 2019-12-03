@@ -51,7 +51,7 @@ foreach ($materials as $term) {
 
 ?>
 
-<div class="work-item grid-item nuevo<?php echo $product_cat_id; ?>">
+<div data-newer="<?= caror_is_language() ? "Nuevo" : "New" ?>" class="work-item grid-item nuevo<?php echo $product_cat_id; ?>">
 	<div class="work-img">
 
 		<?php
@@ -61,12 +61,22 @@ foreach ($materials as $term) {
 		} else {
 			echo sprintf('<img src="%s" alt="%s" class="wp-post-image" />', esc_url(wc_placeholder_img_src('woocommerce_single')), esc_html__('Awaiting product image', 'woocommerce'));
 		}
+
+
+		if (caror_is_language()) {
+			$verProducto = "Ver Producto";
+			$buyProd = "Comprar";
+		} else {
+			$verProducto = "See Product";
+			$buyProd = "Buy";
+		}
+
 		?>
 
 		<div class="work-overlay">
 			<div class="work-description">
 			</div>
-			<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn btn-lg btn-transparent">Ver producto</a>
+			<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn btn-lg btn-transparent"><?= $verProducto ?></a>
 		</div>
 	</div>
 	<div class="nombre-producto">
@@ -76,6 +86,6 @@ foreach ($materials as $term) {
 		?>
 		<span class="valor-precio-2 text-center"><?php echo $price["regular"] ?></span>
 
-		<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn btn-color btn-comprar-prdt">Comprar</a>
+		<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn btn-color btn-comprar-prdt"><?= $buyProd ?></a>
 	</div>
 </div>

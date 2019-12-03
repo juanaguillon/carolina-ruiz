@@ -10,6 +10,19 @@ $blogQuery = array(
 
 $wpQueryBlog = new WP_Query($blogQuery);
 $posts = $wpQueryBlog->posts;
+
+if (caror_is_language()) {
+  $popular = "Más Popular";
+  $categorias = "Categorías";
+  $leermas = "Leer más";
+  $loadmore = "Cargar mas posts";
+} else {
+  $popular = "Most popular";
+  $categorias = "Categories";
+  $leermas = "Read more";
+  $loadmore = "Load more posts";
+}
+
 ?>
 
 
@@ -25,7 +38,7 @@ $posts = $wpQueryBlog->posts;
         </form>
       </div>
       <div class="top-post-section">
-        <span class="tittle">Mas popular</span>
+        <span class="tittle"><?= $popular ?></span>
         <ul>
           <?php
           foreach ($posts as $i => $post) :
@@ -47,7 +60,7 @@ $posts = $wpQueryBlog->posts;
         </ul>
       </div>
       <div class="category-section">
-        <span class="tittle">Categorias</span>
+        <span class="tittle"><?= $categorias ?></span>
 
         <ul class="lista-categorias">
           <?php
@@ -88,7 +101,7 @@ $posts = $wpQueryBlog->posts;
             </div>
             <div class="botones-posts">
               <div>
-                <a href="<?php echo get_permalink($post) ?>" class="btn">Leer mas</a>
+                <a href="<?php echo get_permalink($post) ?>" class="btn"><?= $leermas ?></a>
               </div>
               <div class="compartir-redes">
                 <a href=""><i class="social_facebook"></i></a>
@@ -109,7 +122,7 @@ $posts = $wpQueryBlog->posts;
 
       </div>
       <div class="boton-mas-posts">
-        <a href="#" class="btn-transparent-color btn btn-transparent">Cargar mas posts</a>
+        <a href="#" class="btn-transparent-color btn btn-transparent"><?= $loadmore ?></a>
       </div>
     </div>
   </div>

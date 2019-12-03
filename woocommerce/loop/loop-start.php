@@ -19,6 +19,17 @@
 if (!defined('ABSPATH')) {
 	exit;
 }
+
+if (caror_is_language()) {
+	$collection = "Colección 2018";
+	$collectionText = "Conoce nuestra colección Resort";
+	$todo = "Todo";
+} else {
+	$collection = "Collection 2018";
+	$collectionText = "Meet our resort Collection";
+	$todo = "All";
+}
+
 ?>
 
 
@@ -28,18 +39,25 @@ if (!defined('ABSPATH')) {
 
 		<div class="row heading">
 			<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-				<h2 class="text-center bottom-line">Colección 2018</h2>
-				<p class="subheading text-center">Conoce nuestra colección Resort</p>
+				<h2 class="text-center bottom-line"><?= $collection ?></h2>
+				<p class="subheading text-center"><?= $collectionText ?></p>
 			</div>
 		</div>
 
 		<div class="category-product-filter">
 			<ul>
-				<li><span class="btn iso-filter" data-filter="*">Todo</span></li>
-				<li><span class="btn iso-filter" data-filter=".street">Street</span></li>
-				<li><span class="btn iso-filter" data-filter=".casual">Casual</span></li>
+
+				<li><span class="btn iso-filter" data-filter="*"><?= $todo ?></span></li>
+				<?php
+				$categories = get_terms(['taxonomy' => 'product_cat']);
+				foreach ($categories as $cat) : ?>
+					<li><span class="btn iso-filter" data-filter=".<?= $cat->slug ?>"><?= $cat->name ?></span></li>
+
+				<?php endforeach; ?>
+
+				<!--<li><span class="btn iso-filter" data-filter=".casual">Casual</span></li>
 				<li><span class="btn iso-filter" data-filter=".elegante">Elegante</span></li>
-				<li><span class="btn iso-filter" data-filter=".noche">Noche</span></li>
+				<li><span class="btn iso-filter" data-filter=".noche">Noche</span></li> -->
 			</ul>
 		</div>
 

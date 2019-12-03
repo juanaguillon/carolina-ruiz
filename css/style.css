@@ -643,7 +643,8 @@ body {
 }
 
 .nuevo::before {
-  content: "Nuevo";
+  content: attr(
+  );
   position: absolute;
   background: #631c50;
   color: white;
@@ -1426,7 +1427,7 @@ p {
 .navigation-overlay.sticky .navbar-nav > li > a,
 .navigation-overlay.sticky .menu-socials li > a {
   line-height: 60px;
-  color: #111 !important;
+  color: #111;
 }
 
 .navbar-header {
