@@ -43,7 +43,7 @@ if (!defined('ABSPATH')) {
 			</ul>
 		</div>
 
-		<div class="grid-4-col grid grid-wide grid-gutter grayscale">
+		<div class="grid-4-col grid grid-wide grid-gutter">
 
 
 

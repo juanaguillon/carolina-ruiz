@@ -1,7 +1,15 @@
 <?php
 
 /** Template Name: Blog */
-get_header()
+get_header();
+
+$blogQuery = array(
+  "post_type" => "blog",
+  "posts_per_page" => -1
+);
+
+$wpQueryBlog = new WP_Query($blogQuery);
+$posts = $wpQueryBlog->posts;
 ?>
 
 
@@ -19,76 +27,38 @@ get_header()
       <div class="top-post-section">
         <span class="tittle">Mas popular</span>
         <ul>
-          <li>
-            <div class="top-post">
-              <span class="top-post-rank">1</span>
+          <?php
+          foreach ($posts as $i => $post) :
+            if ($i == 5) break;
+            ?>
+            <li>
+              <div class="top-post">
+                <span class="top-post-rank"><?php echo $i + 1 ?></span>
 
-              <div class="top-post-content">
-                <a href="post.html">
-                  <h4 class="top-post-title">organiza tu maquillaje en 3 simples pasos</h4>
-                </a>
-                <span class="top-post-date">24/Oct/2019</span>
+                <div class="top-post-content">
+                  <a href="<?php echo get_permalink($post) ?>">
+                    <h4 class="top-post-title"><?php echo wp_kses_post($post->post_title); ?></h4>
+                  </a>
+                  <span class="top-post-date"><?php echo get_the_date("d/M/Y", $post) ?></span>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <div class="top-post">
-              <span class="top-post-rank">2</span>
-
-              <div class="top-post-content">
-                <a href="post.html">
-                  <h4 class="top-post-title">las cosas más geniales a la venta para hacer de este tu mejor verano</h4>
-                </a>
-                <span class="top-post-date">24/Oct/2019</span>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="top-post">
-              <span class="top-post-rank">3</span>
-
-              <div class="top-post-content">
-                <a href="post.html">
-                  <h4 class="top-post-title">Cómo diseñar vestidos voluminosos</h4>
-                </a>
-                <span class="top-post-date">24/Oct/2019</span>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="top-post">
-              <span class="top-post-rank">4</span>
-
-              <div class="top-post-content">
-                <a href="post.html">
-                  <h4 class="top-post-title">¿Por qué las chaquetas son la próxima cosa para agregar a su lista de
-                    compras?</h4>
-                </a>
-                <span class="top-post-date">24/Oct/2019</span>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="top-post">
-              <span class="top-post-rank">5</span>
-              <div class="top-post-content">
-                <a href="post.html">
-                  <h4 class="top-post-title">El look perfecto para verano es muy facil...</h4>
-                </a>
-                <span class="top-post-date">24/Oct/2019</span>
-              </div>
-            </div>
-          </li>
+            </li>
+          <?php endforeach; ?>
         </ul>
       </div>
       <div class="category-section">
         <span class="tittle">Categorias</span>
+
         <ul class="lista-categorias">
-          <li><a href="#">Tendencias</a></li>
-          <li><a href="#">Fashion</a></li>
-          <li><a href="#">Tips</a></li>
-          <li><a href="#">Belleza</a></li>
-          <li><a href="#">Estilo de vida</a></li>
+          <?php
+          $categories = get_terms(array(
+            "taxonomy" => "categoria",
+            "hide_empty" => true
+          ));
+          foreach ($categories as $cat) : ?>
+
+            <li><a href="<?php echo get_term_link($cat) ?>"><?php echo $cat->name ?></a></li>
+          <?php endforeach; ?>
         </ul>
       </div>
     </div>
@@ -127,14 +97,12 @@ get_header()
               </div>
             </div>
           </div>
-
-
         <?php
-          // $content_post = get_post($post);
-          // $content = $content_post->post_content;
-          // $content = apply_filters('the_content', $content);
-          // $content = str_replace(']]>', ']]&gt;', $content);
-          // echo $content;
+        // $content_post = get_post($post);
+        // $content = $content_post->post_content;
+        // $content = apply_filters('the_content', $content);
+        // $content = str_replace(']]>', ']]&gt;', $content);
+        // echo $content;
         endforeach;
         ?>
 

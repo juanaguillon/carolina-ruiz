@@ -22,8 +22,10 @@ $(document).on("click", ".number-spinner button", function() {
     .val(newVal);
 });
 
+var $grid = null;
+
 function initPlugins() {
-  var $grid = $(".grid").isotope({
+  $grid = $(".grid").isotope({
     itemSelector: ".grid-item",
     layoutMode: "fitRows"
   });
@@ -140,23 +142,31 @@ function addProductToCartAjax() {
     var currentButton = $(this);
 
     var prodID = currentButton.data("idprod");
+    var redirect = false;
     currentButton.addClass("btn-loading");
     currentButton.prop("disabled", true);
-    key_quant_val;
-    key_color_val;
+
+    if (currentButton.hasClass("go_to_checkout")) {
+      redirect = true;
+    }
     $.ajax({
       url: ajaxURL,
       method: "POST",
       success: function(data) {
-        $("#mini_cart_wrap").html(
-          data["fragments"]["div.widget_shopping_cart_content"]
-        );
+        if (data["redirect"]) {
+          window.location.href = data["redirect"];
+        } else {
+          $("#mini_cart_wrap").html(
+            data["fragments"]["div.widget_shopping_cart_content"]
+          );
+        }
         currentButton.prop("disabled", false);
         currentButton.removeClass("btn-loading");
       },
       data: {
         action: "woocommerce_ajax_add_to_cart",
         product_id: prodID,
+        redirect: redirect,
         product_sku: "",
         quantity: quantity,
         talla: talla,
@@ -167,12 +177,148 @@ function addProductToCartAjax() {
   });
 }
 
+/**
+ * En la página de colleciones es posible cambiar el filtro con los selects.
+ */
+function changeFilterSelectOnCollection() {
+  $(".collection_select").change(function() {
+    var catVal = $("#select_categoria").val();
+    var tallaVal = $("#select_talla").val();
+    var colorVal = $("#select_color").val();
+    var materialVal = $("#select_material").val();
+    var filter = "";
+    if (catVal !== "" && catVal !== "default") {
+      filter += "." + catVal;
+    }
+    if (tallaVal !== "" && tallaVal !== "default") {
+      filter += "." + tallaVal;
+    }
+    if (colorVal !== "" && colorVal !== "default") {
+      filter += "." + colorVal;
+    }
+    if (materialVal !== "" && materialVal !== "default") {
+      filter += "." + materialVal;
+    }
+
+    $grid.isotope({
+      filter: filter
+    });
+  });
+}
+
+function sendContactMessage() {
+  $("#contact-form").on("submit", function(e) {
+    e.preventDefault();
+    function validateEmail(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+    $("#submit-message").addClass("btn-loading");
+    $("#submit-message").attr("disabled", "disabled");
+
+    var showError = function(text) {
+      $("#contact_message_error").addClass("show");
+      $("#contact_message_success").removeClass("show");
+      $("#contact_message_error").text(text);
+
+      $("#submit-message").removeClass("btn-loading");
+      $("#submit-message").removeAttr("disabled");
+    };
+    var showSuccess = function(text) {
+      $("#contact_message_success").addClass("show");
+      $("#contact_message_error").removeClass("show");
+      $("#contact_message_success").text(text);
+
+      $("#submit-message").removeClass("btn-loading");
+      $("#submit-message").removeAttr("disabled");
+    };
+
+    var nombre = $("#contact_form_name").val();
+    var email = $("#contact_form_email").val();
+    var phone = $("#contact_form_phone").val();
+    var message = $("#contact_form_message").val();
+
+    if (nombre === "" || email === "" || phone === "" || message === "") {
+      showError("Todos los campos son requeridos");
+      return false;
+    } else if (!validateEmail(email)) {
+      showError("El email ingresado es inválido.");
+      return false;
+    }
+
+    $.ajax({
+      url: mailUrl,
+      method: "POST",
+      data: {
+        nombre: nombre,
+        email: email,
+        cell: phone,
+        mensaje: message
+      },
+      success: function(data) {
+        if (data === "1") {
+          showSuccess("Se ha enviado el mensaje correctamente");
+        } else {
+          showError("Error al enviar el mensaje, intente nuevamente.");
+        }
+        console.log(data);
+      }
+    });
+  });
+}
+
+// function makeScrollSections() {
+//   var sectionsSelector = ["sobre_mi", "contact"];
+//   var sectionsElements = [];
+//   for (var i = 0; i < sectionsSelector.length; i++) {
+//     var csection = $("#" + sectionsSelector[i]);
+//     if (csection.length) {
+//       var objAdded = {
+//         element: csection,
+//         elementHeight: csection.outerHeight(),
+//         position: csection.offset().top,
+//         li_class: $(".navbar-collapse ul > li." + sectionsSelector[i])
+//       };
+//       sectionsElements.push(objAdded);
+//     }
+//   }
+//   $window.scroll(function() {
+//     var pagePosition = $("html").scrollTop();
+
+//     for (let i = 0; i < sectionsElements.length; i++) {
+//       var element = sectionsElements[i];
+//       if (
+//         element.position <= pagePosition + headerHeight &&
+//         element.position > pagePosition + (headerHeight - element.elementHeight)
+//       ) {
+//         element["li_class"].addClass("active");
+//       } else {
+//         element["li_class"].removeClass("active");
+//       }
+//     }
+//   });
+// }
+
+function makeSrollSections() {
+  $(".scroll_page_link").click(function(e) {
+    e.preventDefault();
+    var section = $(this).data("scroll");
+    var body = $("html, body");
+    body
+      .stop()
+      .animate({ scrollTop: $("#" + section).offset().top - 50 }, 500, "swing");
+  });
+}
+
 $(document).ready(function() {
   initPlugins();
   whenClickOnTallasAndColors();
+  sendContactMessage();
   addProductToCartAjax();
   whenClickOnHeaderCart();
   hideWhenClickOnBody();
+  makeSrollSections();
 
   desplegarColleciones();
+  changeFilterSelectOnCollection();
 });

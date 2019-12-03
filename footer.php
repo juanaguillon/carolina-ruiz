@@ -7,13 +7,25 @@
 
         <div class="footer-logo local-scroll mb-30 wow zoomIn" data-wow-duration="1s" data-wow-delay="0.2s">
           <h2>
-            <a href="#home" class="color-white">Redes Sociales</a>
+            <?php 
+            if (caror_is_language()) { 
+              $redes = "Redes Sociales";
+            } else {
+              $redes = "Social Networks";
+             } ?>
+            <a href="#home" class="color-white"><?= $redes ?></a>
           </h2>
         </div>
 
         <div class="socials footer-socials">
-          <a href="https://www.facebook.com/Caroruiz80/"><i class="fa fa-facebook"></i></a>
-          <a href="https://www.instagram.com/caritoruiz80/"><i class="fa fa-instagram"></i></a>
+
+          <?php
+          foreach (get_field("contacto_redes_sociales", "option") as $red) : ?>
+
+            <a href="<?= $red["url"] ?>">
+              <img src="<?= $red["imagen"]["url"] ?>" alt="<?= $red["texto"] ?>">
+            </a>
+          <?php endforeach; ?>
 
         </div> <!-- end socials -->
 

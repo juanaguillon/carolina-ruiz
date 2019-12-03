@@ -1,9 +1,6 @@
 <?php
 /* Template Name: Checkout Response */
-get_header()
-?>
-
-<?php printcode($_GET);
+get_header();
 
 if (isset($_REQUEST['signature'])) {
   $signature = $_REQUEST['signature'];
@@ -158,7 +155,7 @@ if (strtoupper($signature) == strtoupper($signature_md5)) {
       </tr>
       </tbody>
     </table>
-    <a href="#" class="btn btn-lg btn-color">Volver a tienda</a>
+    <a href="<?php echo get_permalink( wc_get_page_id( 'shop' ) ); ?>" class="btn btn-lg btn-color">Volver a tienda</a>
     </div>
   </div>
 <?php

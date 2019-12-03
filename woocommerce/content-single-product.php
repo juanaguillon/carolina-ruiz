@@ -113,11 +113,20 @@ $availableVariations = $product->get_available_variations();
 
 		<h2><?php echo $product->get_title(); ?></h2>
 		<div class="referencia item-detalle m-0">
-			<span>Referencia:</span><span> R665LO15</span>
+			<span>Referencia:</span><span> <?php echo $product->get_sku() ?></span>
 
 		</div>
 		<div class="precio item-detalle">
-			<span class="valor-precio">$ 55.000</span>
+			<span class="valor-precio"><?php echo getVariationProduct($product)["regular"]; ?></span>
+			<?php
+			$quantityProduct = $product->get_stock_quantity();
+			if ($quantityProduct === null) : ?>
+				<span class="valor-cantidad">Disponibilidad: Existen Unidades</span>
+			<?php elseif ($quantityProduct > 0) : ?>
+				<span class="valor-cantidad">Disponibilidad: <?php echo $quantityProduct; ?> Unidades</span>
+			<?php else : ?>
+				<span class="valor-cantidad">Disponibilidad: <strong style="color: #9c0000;font-weight: bold;">Agotado</strong> </span>
+			<?php endif; ?>
 		</div>
 
 		<?php
@@ -126,11 +135,8 @@ $availableVariations = $product->get_available_variations();
 		$colors = $product->get_attribute('pa_color');
 		$colors = explode(", ", $colors);
 		$tallas = explode(", ", $tallas);
-		// printcode($tallas);
-		// printcode($tallas);
-		// printcode($colors);
 		?>
-		<div class="item-detalle talla detalles">
+		<div class=" item-detalle talla detalles">
 			<span>Talla</span>
 			<ul id="list_tallas">
 				<?php foreach ($tallas as $tkey => $talla) : ?>
@@ -170,13 +176,21 @@ $availableVariations = $product->get_available_variations();
 		</div>
 
 
-		<div class="add_actions">
+		<?php
+		if ($quantityProduct > 0 || $quantityProduct === null) : ?>
+			<div class="add_actions">
 
-			<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-color btn-comprar add_action_cart">
-				<div class="loader"></div>
-				<i class="fa fa-shopping-cart"></i>Añadir a Carrito
-			</a>
-		</div>
+				<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-color btn-comprar add_action_cart">
+					<div class="loader"></div>
+					<i class="fa fa-shopping-cart"></i>Añadir a Carrito
+				</a>
+				<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-comprar add_action_cart go_to_checkout" style="margin-left: 10px;">
+					<div class="loader" style="display: none;"></div>
+					Comprar
+				</a>
+			</div>
+
+		<?php endif; ?>
 		<div class="compartir-producto">
 			<ul>
 				<li><a href="#"><i class="social_facebook"></i></a></li>

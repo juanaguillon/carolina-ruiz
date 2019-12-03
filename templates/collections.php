@@ -28,34 +28,19 @@
           </div>
         </div>
         <div class="filtros-coleccion">
-          <pre>
-            <?php
-
-            // $attrsWC = wc_get_attribute_taxonomies();
-            // $attrsValues = array();
-            // foreach ($attrsWC as $attrKey => $attrVal) {
-            //   if (taxonomy_exists(wc_attribute_taxonomy_name($tax->attribute_name))) :
-            //     $taxonomy_terms[$tax->attribute_name] = get_terms(wc_attribute_taxonomy_name($tax->attribute_name), 'orderby=name&hide_empty=0');
-            //   endif;
-            // }
-
-            ?>
-          </pre>
           <ul>
             <li>
               <span>Categoria</span>
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
 
-                <select>
-                  <option selected="" value="default">Selecciona una opción</option>
+                <select class="collection_select" id="select_categoria">
+                  <option selected="" value="default">Todos</option>
                   <?php
                   $categories = get_terms(['taxonomy' => 'product_cat']);
                   foreach ($categories as $cat) : ?>
                     <option value="<?= $cat->slug ?>"><?= $cat->name ?></option>
                   <?php endforeach; ?>
-
-
                 </select>
               </div>
             </li>
@@ -63,12 +48,12 @@
               <span>Talla</span>
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
-                <select>
-                  <option selected="" value="default">Selecciona una opción</option>
+                <select class="collection_select" id="select_talla">
+                  <option selected="" value="default">Todas</option>
                   <?php
                   $tallas = get_terms("pa_talla");
                   foreach ($tallas  as $tall) : ?>
-                    <option value="<?= $tall->term_id ?>"><?= $tall->name ?></option>
+                    <option value="talla_<?= $tall->slug ?>"><?= $tall->name ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
@@ -77,14 +62,14 @@
               <span>Color</span>
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
-                <select>
-                  <option selected="" value="default">Selecciona una opción</option>
+                <select class="collection_select" id="select_color">
+                  <option selected="" value="default">Todos</option>
                   <?php
                   $colors = get_terms("pa_color");
                   foreach ($colors  as $color) :
                     $colorName = caror_explode_color_name($color->name)
                     ?>
-                    <option value="<?= $color->term_id ?>"><?= $colorName["name"] ?></option>
+                    <option value="<?= $color->slug ?>"><?= $colorName["name"] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
@@ -93,18 +78,26 @@
               <span>Material</span>
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
-                <select>
-                  <option selected="" value="default">Selecciona una opción</option>
-                  <option value="green">Cuero</option>
-                  <option value="black">Cuero graso</option>
-                  <option value="white">Sintetico</option>
+                <select class="collection_select" id="select_material">
+                  <option selected="" value="default">Todos</option>
+                  <?php
+                  $materiales = get_terms(array(
+                    "material" => "material"
+                  ))
+                  ?>
+
+                  <?php
+                  foreach ($materiales as $mat) : ?>
+
+                    <option value="<?php echo $mat->slug ?>"><?php echo $mat->name ?></option>
+                  <?php endforeach; ?>
                 </select>
               </div>
             </li>
           </ul>
         </div>
 
-        <div class="grid-coleccion grid-wide grid-gutter grayscale">
+        <div class="grid-4-col grid grid-wide grid-gutter">
 
           <?php
 

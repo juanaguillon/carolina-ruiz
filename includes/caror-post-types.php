@@ -6,10 +6,10 @@ function caror_remove_labels_admin()
   remove_menu_page('edit.php'); // Posts
   remove_menu_page('edit-comments.php'); // Comments
   // remove_menu_page('edit.php?post_type=page'); // Pages
-  remove_menu_page('plugins.php'); // Plugins
+  // remove_menu_page('plugins.php'); // Plugins
   remove_menu_page('themes.php'); // Appearance
   remove_menu_page('tools.php'); // Tools
-  remove_menu_page('options-general.php'); // Settings
+  // remove_menu_page('options-general.php'); // Settings
   remove_menu_page('edit.php'); // Posts
 }
 add_action('admin_init', 'caror_remove_labels_admin');
@@ -120,18 +120,43 @@ function __caror_register_taxonomy($name, $is_male = true, $asTag = false, $othe
 function caror_register_posts_types()
 {
   $postTypes = array(
-    "blog" => __caror_register_post_type("Post", "dashicons-admin-site", true, array("title", "excerpt", "editor", "thumbnail"))
+    "blog" => __caror_register_post_type("Post", "dashicons-admin-site", true, array("title", "excerpt", "editor", "thumbnail")),
+    "banner" => __caror_register_post_type("Banner", "dashicons-images-alt2", true, array("title", "excerpt", "thumbnail"))
   );
   foreach ($postTypes as $ptkey => $ptvalue) {
 
     register_post_type($ptkey, $ptvalue);
   }
-  $taxonomiesBlog = array(
-    "categoria" => __caror_register_taxonomy("Categoría", false),
+
+  $taxonomies = array(
+    "blog" => array(
+      "categoria" => __caror_register_taxonomy("Categoría", false, false, array(
+        "slug" => "categoria"
+      )),
+    ),
+    "product" => array(
+      "material" => __caror_register_taxonomy("Material", true, true)
+    ),
   );
-  foreach ($taxonomiesBlog as $tax => $taxArgs) {
-    register_taxonomy($tax, "blog", $taxArgs);
+
+  foreach ($taxonomies as $postTypeID => $taxes) {
+    foreach ($taxes as $taxSlug => $taxArgs) {
+      register_taxonomy($taxSlug, $postTypeID, $taxArgs);
+    }
   }
 }
 
 add_action("init", "caror_register_posts_types");
+
+
+$generalOptions = acf_add_options_page(array(
+  "position"    => "9",
+  'menu_title'  => 'Opciones',
+  'menu_slug'   => 'theme-general-settings',
+));
+
+acf_add_options_sub_page(array(
+  'page_title'   => 'Contacto',
+  'menu_title'   => 'Contacto',
+  'parent_slug'   => $generalOptions['menu_slug'],
+));

@@ -40,6 +40,7 @@
 <body data-spy="scroll" data-offset="60" data-target=".navbar-fixed-top">
   <script>
     var ajaxURL = "<?php echo esc_url(admin_url("admin-ajax.php")) ?>"
+    var mailUrl = "<?php echo get_template_directory_uri() . "/includes/envioform.php" ?>"
   </script>
 
   <!-- Preloader -->
@@ -68,7 +69,7 @@
               <!-- Logo -->
               <div class="logo-container">
                 <div class="logo-wrap local-scroll">
-                  <a href="#home">
+                  <a href="<?php echo esc_url(home_url()) ?>">
                     <img class="logo" src="<?php echo get_template_directory_uri() ?>/img/logo_light.png" alt="logo">
                   </a>
                 </div>
@@ -80,30 +81,53 @@
               <div class="collapse navbar-collapse text-center" id="navbar-collapse">
 
                 <ul class="nav navbar-nav local-scroll text-center">
-                  <li class="active"><a href="<?php echo esc_url(home_url()) ?>">Home</a></li>
-                  <li>
-                    <a href="#owl-promo">Sobre mi</a>
+
+                  <?php
+                  $headText1 = "Inicio";
+                  $headText2 = "Sobre mi";
+                  $headText3 = "Categorías";
+                  $headText3All = "Todas";
+                  $headText4 = "Tienda";
+                  $headText5 = "Contacto";
+
+                  if (caror_is_language("en")) {
+                    $headText1 = "Home";
+                    $headText2 = "About me";
+                    $headText3 = "Categories";
+                    $headText3All = "All";
+                    $headText4 = "Shop";
+                    $headText5 = "Contact";
+                  }
+
+                  ?>
+
+                  <li class="<?= is_home() || is_front_page() ? "active" : "" ?>"><a href="<?php echo esc_url(home_url()) ?>"><?= $headText1 ?></a></li>
+                  <li class="">
+                    <a class="scroll_page_link" data-scroll="sobre_mi"><?= $headText2 ?></a>
                   </li>
                   <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="colecciones.html">Colecciones
-                      <span class="revicon-down-open"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="<?= get_permalink(177) ?>"><?= $headText3 ?>
+                      <span class="revicon-down-open"></span>
+                    </a>
                     <ul class="dropdown-menu menu-nav-desplegable">
-
-                      <li><a href="<?= get_permalink(177) ?>">Todas</a></li>
-                      <li><a href="#">Street</a></li>
-                      <li><a href="#">Casual</a></li>
-                      <li><a href="#">Elegante</a></li>
-                      <li><a href="#">Noche</a></li>
+                      <li><a href="<?= get_permalink(177) ?>"><?= $headText3All ?></a></li>
+                      <?php
+                      $categoriasWP = get_terms(array(
+                        "taxonomy" => "product_cat"
+                      ));
+                      foreach ($categoriasWP as $cat) : ?>
+                        <li><a href="<?php echo get_term_link($cat) ?>"><?php echo $cat->name ?></a></li>
+                      <?php endforeach; ?>
                     </ul>
                   </li>
-                  <li>
-                    <a href="#about-us">Prensa</a>
+                  <li class="<?= is_shop() ? "active" : "" ?>">
+                    <a href="<?php echo get_permalink(wc_get_page_id('shop')); ?>"><?= $headText4 ?></a>
+                  </li>
+                  <li class="<?= is_page(191) ? "active" : "" ?>">
+                    <a href="<?php echo get_permalink(191) ?>">Blog</a>
                   </li>
                   <li>
-                    <a href="blog.html">Blog</a>
-                  </li>
-                  <li>
-                    <a href="#contact">Contacto</a>
+                    <a class="scroll_page_link" data-scroll="contact"><?= $headText5 ?></a>
                   </li>
 
                 </ul>
@@ -113,11 +137,12 @@
             <div class="menu-socials hidden-sm hidden-xs">
               <ul>
 
-                <li class="spanish">
-                  <a href="#">ES</a>
+                
+                <li class="spanish <?= caror_is_language("es") ? "active" : "" ?>">
+                  <a href="<?= pll_home_url("es") ?>">ES</a>
                 </li>
-                <li class="english">
-                  <a href="#">EN</a>
+                <li class="english <?= caror_is_language("en") ? "active" : "" ?>">
+                  <a href="<?= pll_home_url("en") ?>">EN</a>
                 </li>
                 <li class="cart_list">
                   <a href="#">
