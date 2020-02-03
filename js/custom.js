@@ -36,6 +36,39 @@ function initPlugins() {
       filter: filter
     });
   });
+
+  $(".lista-imagenes-carousel").slick({
+    vertical: true,
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    asNavFor: ".carousel-inner_product",
+    prevArrow: $(".flecha-mov-top"),
+    centerMode: true,
+    focusOnSelect: true,
+    nextArrow: $(".flecha-mov-bottom"),
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          vertical:false
+        }
+      }
+    ]
+  });
+  $(".carousel-inner_product").slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    asNavFor: ".lista-imagenes-carousel",
+    arrows: false
+  });
+
+  $(".image-slider-container").imagefill();
+  $(".carousel-inner_product").lightGallery({
+    selector: ".image-slider-container"
+  }); 
 }
 
 $(".category-product-filter ul li span").click(function() {
@@ -287,37 +320,15 @@ function sendContactMessage() {
   });
 }
 
-// function makeScrollSections() {
-//   var sectionsSelector = ["sobre_mi", "contact"];
-//   var sectionsElements = [];
-//   for (var i = 0; i < sectionsSelector.length; i++) {
-//     var csection = $("#" + sectionsSelector[i]);
-//     if (csection.length) {
-//       var objAdded = {
-//         element: csection,
-//         elementHeight: csection.outerHeight(),
-//         position: csection.offset().top,
-//         li_class: $(".navbar-collapse ul > li." + sectionsSelector[i])
-//       };
-//       sectionsElements.push(objAdded);
-//     }
-//   }
-//   $window.scroll(function() {
-//     var pagePosition = $("html").scrollTop();
-
-//     for (let i = 0; i < sectionsElements.length; i++) {
-//       var element = sectionsElements[i];
-//       if (
-//         element.position <= pagePosition + headerHeight &&
-//         element.position > pagePosition + (headerHeight - element.elementHeight)
-//       ) {
-//         element["li_class"].addClass("active");
-//       } else {
-//         element["li_class"].removeClass("active");
-//       }
-//     }
-//   });
-// }
+/**
+ * Mostrar el modal del search
+ */
+function openSearchModal() {
+  $("#search_modal_button").click(function(e) {
+    e.preventDefault();
+    $("#modal_form_search").modal("show");
+  });
+}
 
 function makeSrollSections() {
   $(".scroll_page_link").click(function(e) {
@@ -330,6 +341,64 @@ function makeSrollSections() {
   });
 }
 
+/**
+ * Conectar página con facebook para poder compartir productos.
+ */
+function connectToFb() {
+  (function(d, s, id) {
+    var js,
+      fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, "script", "facebook-jssdk");
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: 523244048269470,
+      autoLogAppEvents: true,
+      xfbml: true,
+      version: "v3.3"
+    });
+    FB.AppEvents.logPageView();
+  };
+  (function($) {
+    $("#social_facebook_link").on("click", function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      var linkshare = window.location.href;
+      var titleshare = $(this).data("nombre");
+      var descripshare = $(this).data("descrip");
+      var imgshare = $(this).data("urlimg");
+      var FBDesc = descripshare;
+      var FBTitle = titleshare;
+      var FBLink = linkshare;
+      var FBPic = imgshare;
+      FB.ui(
+        {
+          method: "share",
+          action_type: "og.likes",
+          mobile_iframe: true,
+          action_properties: JSON.stringify({
+            object: {
+              "og:url": FBLink,
+              "og:title": FBTitle,
+              "og:description": FBDesc,
+              "og:image": FBPic
+            }
+          })
+        },
+        function(response) {}
+      );
+    });
+  })(jQuery);
+}
+
 window.onload = function() {
   initPlugins();
   whenClickOnTallasAndColors();
@@ -339,7 +408,9 @@ window.onload = function() {
   hideWhenClickOnBody();
   makeSrollSections();
   makeScrollIfExistsTheQueryParam();
+  openSearchModal();
 
   desplegarColleciones();
   changeFilterSelectOnCollection();
+  connectToFb();
 };

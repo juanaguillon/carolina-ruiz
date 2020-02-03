@@ -18,13 +18,20 @@
 
 defined('ABSPATH') || exit;
 
+if ( caror_is_language()){
+	$cartTotals = "Total de carrito";
+}else{
+	$cartTotals = "Carts Totals";
+
+}
+
 ?>
 <div class="cart_totals <?php echo (WC()->customer->has_calculated_shipping()) ? 'calculated_shipping' : ''; ?>">
 
 	<?php do_action('woocommerce_before_cart_totals'); ?>
 	<!-- <button style="margin-bottom: 2rem;" type="submit" class="btn btn-primary btn-sm mb-3" name="update_cart" value="<?php esc_attr_e('Update cart', 'woocommerce'); ?>"><?php esc_html_e('Update cart', 'woocommerce'); ?></button> -->
 
-	<h2><?php esc_html_e('Cart totals', 'woocommerce'); ?></h2>
+	<h2><?php echo $cartTotals ?></h2>
 
 	<table cellspacing="0" class="shop_table shop_table_responsive">
 

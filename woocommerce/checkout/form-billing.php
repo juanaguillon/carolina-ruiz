@@ -18,6 +18,14 @@
  */
 
 defined('ABSPATH') || exit;
+
+if ( caror_is_language()){
+	$details = "Detalles de facturación";
+}else{
+	$details = "Billing details";
+
+}
+
 ?>
 
 <div class="woocommerce-billing-fields">
@@ -27,7 +35,7 @@ defined('ABSPATH') || exit;
 
 	<?php else : ?>
 
-		<h3><?php esc_html_e('Billing details', 'woocommerce'); ?></h3>
+		<h3><?php echo $details ?></h3>
 
 	<?php endif; ?>
 

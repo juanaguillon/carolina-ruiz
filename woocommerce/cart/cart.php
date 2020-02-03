@@ -35,12 +35,27 @@ defined('ABSPATH') || exit;
 					<tr>
 
 
-						<th class="t-product-name">Producto</th>
+						<?php
+						$labelProducto = "Producto";
+						$labelPrecio = "Precio";
+						$labelCantidad = "Cantidad";
+						$labelSubtotal = "Subtotal";
+
+						if (caror_is_language("en")) {
+							$labelProducto = "Product";
+							$labelPrecio = "Price";
+							$labelCantidad = "Quantity";
+							$labelSubtotal = "Subtotal";
+						}
+						?>
+
+
+						<th class="t-product-name"><?= $labelProducto ?></th>
 						<!-- <th class="t-product-price">Talla</th>
 				<th class="t-product-price">Color</th> -->
-						<th class="t-product-price">Precio</th>
-						<th class="t-product-quantity">Cantidad</th>
-						<th class="t-product-subtotal">Subtotal</th>
+						<th class="t-product-price"><?= $labelPrecio ?></th>
+						<th class="t-product-quantity"><?= $labelCantidad ?></th>
+						<th class="t-product-subtotal"><?= $labelSubtotal ?></th>
 						<th class="t-product-remove">&nbsp;</th>
 					</tr>
 				</thead>
@@ -167,7 +182,14 @@ defined('ABSPATH') || exit;
 
 				</tbody>
 			</table>
-			<button type="submit" class="btn btn-sm" style="margin: 10px 0;" name="update_cart" value="<?php esc_attr_e('Update cart', 'woocommerce'); ?>"><?php esc_html_e('Update cart', 'woocommerce'); ?></button>
+			<?php 
+			if ( caror_is_language()){
+				$buttonValue = "Actualizar Carrito";
+			}else{
+				$buttonValue = "Update cart";
+			}
+			 ?>
+			<button type="submit" class="btn btn-sm" style="margin: 10px 0;" name="update_cart" value="<?php echo $buttonValue ?>"><?php echo $buttonValue ?></button>
 
 			<?php do_action('woocommerce_cart_actions'); ?>
 

@@ -20,7 +20,10 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <div class="product-features">
-	<?php foreach ($item_data as $data) : ?>
-		<span class="d-flex"><?php echo wp_kses_post($data['key']); ?>: <?= ucfirst(wp_kses_post(wpautop($data['display']))) ?></span>
+	<?php foreach ($item_data as $data) :
+		$nodef = " - ";
+		$display = trim($data['display']) !== "" ? ucfirst(wp_kses_post($data['display'])) : $nodef;
+		?>
+		<span class="d-flex"><?php echo wp_kses_post($data['key']); ?>: <?= $display ?></span>
 	<?php endforeach; ?>
 </div>

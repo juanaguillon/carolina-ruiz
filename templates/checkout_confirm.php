@@ -55,17 +55,26 @@ if (isset($_REQUEST['response_code_pol'])) {
 if (strtoupper($signature) == strtoupper($signature_md5)) {
   $order = new WC_Order($referenceCode);
 
+  $fallida = "Transacción fallida";
+  $rechazada = "Transacción rechazada";
+  $pendiente = "Transacción Pendiente";
+  
+  if ( caror_is_language("en")){
+    $fallida = "Transaction failed";
+    $rechazada = "Transaction rejected";
+    $pendiente = "Transaction pending";
+  }
+  
   if ($transactionState == 6 && $polResponseCode == 5) {
-    $order->update_status('failed', __('Transaccion fallida', 'woothemes'));
+    $order->update_status('failed',  $fallida );
   } else if ($transactionState == 6 && $polResponseCode == 4) {
-    $order->update_status('refunded', __('Transaccion rechazada', 'woothemes'));
+    $order->update_status('refunded', $rechazada);
   } else if ($transactionState == 12 && $polResponseCode == 9994) {
-    $order->update_status('pending', __('Transaccion pendiente', 'woothemes'));
+    $order->update_status('pending', $pendiente);
   } else if ($transactionState == 4 && $polResponseCode == 1) {
     $order->payment_complete();
   } else {
-    $order->update_status('failed', __('Transaccion fallida', 'woothemes'));
+    $order->update_status('failed',$fallida);
   }
 }
 get_footer()
-?>

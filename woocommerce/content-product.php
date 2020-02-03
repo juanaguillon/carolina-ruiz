@@ -52,12 +52,13 @@ foreach ($materials as $term) {
 ?>
 
 <div data-newer="<?= caror_is_language() ? "Nuevo" : "New" ?>" class="work-item grid-item nuevo<?php echo $product_cat_id; ?>">
+<a href="<?php echo esc_url($product->get_permalink()); ?>" >
 	<div class="work-img">
 
 		<?php
 		$post_thumbnail_id = $product->get_image_id();
 		if ($product->get_image_id()) {
-			echo wc_get_gallery_image_html($post_thumbnail_id, true);
+			printf("<img src='%s' >", wp_get_attachment_image_url($post_thumbnail_id, "large"));
 		} else {
 			echo sprintf('<img src="%s" alt="%s" class="wp-post-image" />', esc_url(wc_placeholder_img_src('woocommerce_single')), esc_html__('Awaiting product image', 'woocommerce'));
 		}
@@ -76,9 +77,10 @@ foreach ($materials as $term) {
 		<div class="work-overlay">
 			<div class="work-description">
 			</div>
-			<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn btn-lg btn-transparent"><?= $verProducto ?></a>
+			<span class="btn btn-lg btn-transparent"><?= $verProducto ?></span>
 		</div>
 	</div>
+</a>
 	<div class="nombre-producto">
 		<h4><?php echo wp_kses_post($product->get_name()); ?></h4>
 		<?php

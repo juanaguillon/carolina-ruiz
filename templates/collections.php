@@ -1,5 +1,19 @@
 <?php /* Template Name: Collections */ get_header() ?>
 
+<?php 
+$categoria = "Categoría";
+$allMasc = "Todos";
+$allFem = "Todas";
+$talla = "Talla";
+
+if ( caror_is_language("en")){
+  $categoria = "Category";
+  $allMasc = "All";
+  $allFem = "All";
+  $talla = "Size";
+}
+ ?>
+
 <div class="page-content">
   <div class="row ">
 
@@ -30,12 +44,12 @@
         <div class="filtros-coleccion">
           <ul>
             <li>
-              <span>Categoria</span>
+              <span><?= $categoria ?></span>
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
 
                 <select class="collection_select" id="select_categoria">
-                  <option selected="" value="default">Todos</option>
+                  <option selected="" value="default"><?= $allMasc ?></option>
                   <?php
                   $categories = get_terms(['taxonomy' => 'product_cat']);
                   foreach ($categories as $cat) : ?>
@@ -45,15 +59,15 @@
               </div>
             </li>
             <li>
-              <span>Talla</span>
+              <span><?= $talla ?></span>
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
                 <select class="collection_select" id="select_talla">
-                  <option selected="" value="default">Todas</option>
+                  <option selected="" value="default"><?= $allFem ?></option>
                   <?php
                   $tallas = get_terms("pa_talla");
                   foreach ($tallas  as $tall) : ?>
-                    <option value="talla_<?= $tall->slug ?>"><?= $tall->name ?></option>
+                    <option value="talla_<?= $tall->slug ?>"><?= strtoupper(strtolower($tall->name)) ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
@@ -63,7 +77,7 @@
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
                 <select class="collection_select" id="select_color">
-                  <option selected="" value="default">Todos</option>
+                  <option selected="" value="default"><?= $allMasc ?></option>
                   <?php
                   $colors = get_terms("pa_color");
                   foreach ($colors  as $color) :
@@ -79,7 +93,7 @@
               <div class="select relative">
                 <i class="fa fa-angle-down"></i>
                 <select class="collection_select" id="select_material">
-                  <option selected="" value="default">Todos</option>
+                  <option selected="" value="default"><?= $allMasc ?></option>
                   <?php
                   $materiales = get_terms(array(
                     "material" => "material"

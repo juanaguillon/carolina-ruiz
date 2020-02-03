@@ -1,3 +1,4 @@
+<?php /* Template Name: Index */ ?>
 <?php get_header() ?>
 
 
@@ -15,16 +16,27 @@
 
         $banners = $bannersQuery->posts;
 
-        foreach ($banners as $banner) : ?>
+        foreach ($banners as $banner) : 
+          $imgCrop = get_field("imagen_de_banner", $banner)["url"];
+          
+        ?>
+        
+        
           <li data-fstransition="fade" data-transition="zoomout" data-easein="default" data-easeout="default" data-slotamount="1" data-masterspeed="1200" data-delay="8000" data-title="<?= $banner->post_title ?>">
             <!-- MAIN IMAGE -->
-            <img src="<?= get_the_post_thumbnail_url($banner, "full") ?>" alt="<?= $banner->post_title ?>" data-bgrepeat="no-repeat" data-bgfit="cover" data-bgparallax="7" class="rev-slidebg">
+            <img src="<?= $imgCrop ?>" data-bgrepeat="no-repeat" data-bgfit="cover" data-bgparallax="7" class="rev-slidebg">
 
             <!-- LAYER NR. 1 -->
             <div class="tp-caption medium_text" data-x="left" data-y="center" data-voffset="40" data-transform_idle="o:1;s:1000" data-transform_in="x:0;y:200;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;s:500;" data-transform_out="opacity:0;s:1000;e:Power3.easeInOut;" data-start="1000">
               <div class="texto-banner">
                 <h2><?= $banner->post_title ?></h2>
-                <a href="<?= get_permalink(woocommerce_get_page_id('shop')) ?>" class="btn btn-lg btn-transparent">Ver Tienda</a>
+                <?php 
+                $tienda = "Ver tienda";
+                if ( caror_is_language("en")){
+                  $tienda = "See shop";
+                }
+                 ?>
+                <a href="<?= get_permalink(woocommerce_get_page_id('shop')) ?>" class="btn btn-lg btn-transparent"><?= $tienda ?></a>
               </div>
               <div>
 
@@ -77,10 +89,10 @@
                 En cuanto a nuestro producto como tal, las ideas son infinitas cuando se trata de usar chaquetas o chalecos con diseños diferenciadores. <br><br>
               </p>
 
-              <div class="customNavigation mt-40">
+              <!-- <div class="customNavigation mt-40">
                 <a class="prev"><i class="icon arrow_left"></i></a>
                 <a class="next"><i class="icon arrow_right"></i></a>
-              </div>
+              </div> -->
             </div>
 
           <?php
@@ -93,10 +105,10 @@
                 In 2017 Carolina Ruiz creates the first jacket of her brand, inspired by couture scraps, jean, studs, lace, sequins, skins, with this idea of ​​the superposition of materials that give life to a new born combining elements and details achieving a differentiating, personalized and unique garment where artisan workmanship plays the most important role. <br><br> Customizing clothes is a trend, although nothing differs from the embroidered lace made by our grandmothers, right now it has greater presence in clothes. Perhaps it is because it is more interesting to go out with something that describes your personality or because we want to distinguish ourselves with something different, the truth is that we are living in a personalized world and we must learn to make the most of fashion. <br><br> Globalization has led the big brands to generate fashion patterns that although they achieve their mission by wholesale marketing a single type of garment, it also makes us fall as consumers in the use of standards that do not always reflect our unique personality and our own style. <br><br>As for our product as such, the ideas are endless when it comes to wearing jackets or vests with differentiating designs. <br><br>
               </p>
 
-              <div class="customNavigation mt-40">
+              <!-- <div class="customNavigation mt-40">
                 <a class="prev"><i class="icon arrow_left"></i></a>
                 <a class="next"><i class="icon arrow_right"></i></a>
-              </div>
+              </div> -->
             </div>
           <?php
           endif;
@@ -188,8 +200,7 @@ if (caror_is_language("en")) {
 </section> <!-- end portfolio-->
 
 
-<!-- Call to Action -->
-<section class="call-to-action">
+<!-- <section class="call-to-action">
   <div class="container">
     <div class="row">
 
@@ -203,7 +214,7 @@ if (caror_is_language("en")) {
 
     </div>
   </div>
-</section> <!-- end call to action -->
+</section> -->
 
 <section class="section-wrap contact" id="contact">
   <div class="container">

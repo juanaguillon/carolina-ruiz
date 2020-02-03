@@ -23,7 +23,9 @@
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/rev-slider.css" />
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/sliders.css">
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/style.css" />
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/lg.css" />
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/responsive.css" />
+  <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/slick.css" />
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/spacings.css" />
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/animate.css" />
   <link rel="stylesheet" href="<?php echo get_template_directory_uri() ?>/css/custom.css" />
@@ -33,6 +35,16 @@
   <link rel="apple-touch-icon" href="<?php echo get_template_directory_uri() ?>/img/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="72x72" href="<?php echo get_template_directory_uri() ?>/img/apple-touch-icon-72x72.png">
   <link rel="apple-touch-icon" sizes="114x114" href="<?php echo get_template_directory_uri() ?>/img/apple-touch-icon-114x114.png">
+
+  <?php
+                                                      if (is_singular(["product", "blog"])) :
+                                                        $posttyle = get_queried_object(); ?>
+    <meta property="og:title" content="Carolina Ruiz | <?php echo $posttyle->post_title ?>" />
+    <meta property="og:description" content="<?php echo $posttyle->post_content ?>" />
+    <meta property="og:url" content="<?php echo get_permalink($posttyle) ?>" />
+    <meta property="og:site_name" content="Mazal" />
+    <meta property="og:image" content="<?php echo get_the_post_thumbnail_url($posttyle, "medium") ?>" />
+  <?php endif; ?>
 
   <?php wp_head() ?>
 </head>
@@ -83,21 +95,21 @@
                 <ul class="nav navbar-nav local-scroll text-center">
 
                   <?php
-                  $headText1 = "Inicio";
-                  $headText2 = "Sobre mi";
-                  $headText3 = "Categorías";
-                  $headText3All = "Todas";
-                  $headText4 = "Tienda";
-                  $headText5 = "Contacto";
+                                                      $headText1 = "Inicio";
+                                                      $headText2 = "Sobre mi";
+                                                      $headText3 = "Categorías";
+                                                      $headText3All = "Todas";
+                                                      $headText4 = "Tienda";
+                                                      $headText5 = "Contacto";
 
-                  if (caror_is_language("en")) {
-                    $headText1 = "Home";
-                    $headText2 = "About me";
-                    $headText3 = "Categories";
-                    $headText3All = "All";
-                    $headText4 = "Shop";
-                    $headText5 = "Contact";
-                  }
+                                                      if (caror_is_language("en")) {
+                                                        $headText1 = "Home";
+                                                        $headText2 = "About me";
+                                                        $headText3 = "Categories";
+                                                        $headText3All = "All";
+                                                        $headText4 = "Shop";
+                                                        $headText5 = "Contact";
+                                                      }
 
                   ?>
 
@@ -109,7 +121,7 @@
                       <a href="<?php echo pll_home_url() . "?section=sobre_mi" ?>"><?= $headText2 ?></a>
                     <?php endif; ?>
                   </li>
-                  <li class="dropdown">
+                  <li id="categories_dropdown" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href=""><?= $headText3 ?>
                       <span class="revicon-down-open"></span>
                     </a>
@@ -123,6 +135,9 @@
                         <li><a href="<?php echo get_term_link($cat) ?>"><?php echo $cat->name ?></a></li>
                       <?php endforeach; ?>
                     </ul>
+                  </li>
+                  <li id="categories_simple">
+                    <a href="<?= get_permalink(pll_get_post(177)) ?>"><?= $headText3 ?></a>
                   </li>
                   <li class="<?= is_shop() ? "active" : "" ?>">
                     <a href="<?php echo get_permalink(wc_get_page_id('shop')); ?>"><?= $headText4 ?></a>
@@ -163,7 +178,7 @@
                   </div>
 
                 </li>
-                <li>
+                <li id="search_modal_button">
                   <a href="#" class="boton-buscar"><i class="icon_search"></i></a>
                 </li>
 
@@ -176,5 +191,47 @@
     </nav> <!-- end navbar -->
 
   </header> <!-- end navigation -->
+  <div id="modal_form_search" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <?php
+                                                                                                                              $action = pll_home_url();
+                                                                                                                              $placeholder = "Buscar en la web.";
+                                                                                                                              $button = "Buscar";
+
+                                                                                                                              if (caror_is_language("en")) {
+                                                                                                                                $placeholder = "Search in web";
+                                                                                                                                $button = "Search";
+                                                                                                                              }
+          ?>
+          <form action="<?= $action ?>" id="form_search" method="get">
+            <div class="field-group">
+              <input name="s" type="text" placeholder="<?= $placeholder ?>">
+            </div>
+            <div class="field-group text-center">
+              <button class="btn btn-primary"><i class="icon-search"></i><?= $button ?></button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+      <!-- <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Buscar en la web</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div> -->
+    </div>
+  </div>
   <div class="main-wrapper-onepage main oh">
     <!-- End in footer -->

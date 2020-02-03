@@ -29,21 +29,30 @@ $currentPost = get_queried_object();
     <p>
       <?php echo $currentPost->post_content ?>
 
+      <?php
+      $gusto = "Comparte si te gustó";
+      $relacionado = "Posts relacionados";
+
+      if (caror_is_language("en")) {
+        $gusto = "Share if you liked it";
+        $relacionado = "Related Posts";
+      }
+
+      ?>
+
     </p>
     <div class="botones-post">
-      <span>Comparte si te gustó</span>
+      <span><?= $gusto ?></span>
       <div class="compartir-redes">
-        <a href="#"><i class="social_facebook"></i></a>
-        <a href="#"><i class="social_twitter"></i></a>
-        <a href="#"><i class="social_pinterest"></i></a>
+        <a href="#" id="social_facebook_link"><i class="social_facebook"></i></a>
+        <a target="_blank" href="https://twitter.com/intent/tweet?url=<?= esc_url(get_permalink($currentPost)) ?>&text=<?= $currentPost->post_excerpt ?>"><i class="social_twitter"></i></a>
       </div>
     </div>
   </div>
 
-
   <div class="row seccion-articulos-relacionados post-layout">
     <div class="col-md-12">
-      <h3 class="text-center bottom-line">Posts relacionados</h3>
+      <h3 class="text-center bottom-line"><?= $relacionado ?></h3>
     </div>
     <?php
     $postsQuery = new WP_Query(array(

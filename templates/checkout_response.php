@@ -108,11 +108,11 @@ if (strtoupper($signature) == strtoupper($signature_md5)) {
       </thead>
       <tbody>
       <tr>
-        <td><b>Estado de la transacci&oacute;n</b></td>
+        <td><b>Estado de la transacción</b></td>
         <td><?php echo $estadoTx; ?></td>
       </tr>
       <tr>
-        <td><b>ID de la transacci&oacute;n</b></td>
+        <td><b>ID de la transacción</b></td>
         <td><?php echo $transactionId; ?></td>
       </tr>
       <tr>
@@ -120,7 +120,7 @@ if (strtoupper($signature) == strtoupper($signature_md5)) {
         <td><?php echo $reference_pol; ?></td>
       </tr>
       <tr>
-        <td><b>Referencia de la transacci&oacute;n</b></td>
+        <td><b>Referencia de la transacción</b></td>
         <td><?php echo $referenceCode; ?></td>
       </tr>
       <?php

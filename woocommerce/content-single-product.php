@@ -40,15 +40,18 @@ $availableVariations = $product->get_available_variations();
 
 <div class="row contenido-producto res-mb">
 	<div id="product-<?php the_ID(); ?>" class="col-md-7 slider-producto">
-		<div class="product-slider row d-flex m-0">
+		<div class="product-slider m-0">
 
 			<div class="clearfix col-md-1 col-sm-12 p-0-temp">
 				<div id="thumbcarousel" class="carousel" data-interval="false">
 					<div class="carousel-inner">
+						<div class="flecha-mov flecha-mov-top">
+							<a class="down carousel-control" href="#thumbcarousel" role="button" data-slide="next"><i class="fa fa-angle-up" aria-hidden="true"></i> </a>
+						</div>
 						<div class="item lista-imagenes-carousel">
 							<?php if ($imageID = $product->get_image_id()) : ?>
 								<div data-target="#carousel" data-slide-to="0" class="thumb">
-									<img src="<?php echo wp_get_attachment_image_url($imageID, "thumbnail"); ?>">
+									<img  src="<?php echo wp_get_attachment_image_url($imageID, "thumbnail"); ?>">
 								</div>
 							<?php endif; ?>
 
@@ -66,7 +69,7 @@ $availableVariations = $product->get_available_variations();
 							?>
 
 						</div>
-						<div class="flecha-mov">
+						<div class="flecha-mov flecha-mov-bottom">
 							<a class="down carousel-control" href="#thumbcarousel" role="button" data-slide="next"><i class="fa fa-angle-down" aria-hidden="true"></i> </a>
 						</div>
 					</div>
@@ -74,36 +77,36 @@ $availableVariations = $product->get_available_variations();
 				</div>
 
 			</div>
-			<div id="carousel" class="carousel slide col-md-11 col-sm-12 p-0-temp slider-imagenes-produtos" data-ride="carousel">
-				<div class="carousel-inner">
+			<!-- <div id="carousel" class="carousel slide col-md-11 col-sm-12 p-0-temp slider-imagenes-produtos" data-ride="carousel"> -->
+			<div class="carousel-inner_product">
 
-					<?php if ($imageID = $product->get_image_id()) : ?>
-						<div class="item active">
-							<div class="image-slider-container">
-								<img src="<?php echo  wp_get_attachment_image_url($imageID, "full"); ?>">
+				<?php if ($imageID = $product->get_image_id()) : ?>
+					<div class="item active">
+						<div data-src="<?php echo wp_get_attachment_image_url($imageID, "full"); ?>" class="image-slider-container">
+							<img  src="<?php echo  wp_get_attachment_image_url($imageID, "large"); ?>">
+						</div>
+					</div>
+				<?php endif; ?>
+
+				<?php
+				$attachment_ids = $product->get_gallery_image_ids();
+				if ($attachment_ids) :
+					$first = true;
+					foreach ($attachment_ids as $attachment_id) :
+						?>
+						<div class="item">
+							<div data-src="<?php echo  wp_get_attachment_image_url($attachment_id, "full"); ?>" class="image-slider-container">
+								<img  src="<?php echo  wp_get_attachment_image_url($attachment_id, "large"); ?>">
 							</div>
 						</div>
-					<?php endif; ?>
+				<?php
+						$first = false;
+					endforeach;
+				endif;
+				?>
 
-					<?php
-					$attachment_ids = $product->get_gallery_image_ids();
-					if ($attachment_ids) :
-						$first = true;
-						foreach ($attachment_ids as $attachment_id) :
-							?>
-							<div class="item">
-								<div class="image-slider-container">
-									<img src="<?php echo  wp_get_attachment_image_url($attachment_id, "full"); ?>">
-								</div>
-							</div>
-					<?php
-							$first = false;
-						endforeach;
-					endif;
-					?>
-
-				</div>
 			</div>
+			<!-- </div> -->
 		</div>
 
 	</div>
@@ -178,7 +181,7 @@ $availableVariations = $product->get_available_variations();
 					<?php endforeach; ?>
 				</ul>
 				<input type="hidden" id="key_talla_val" value="<?= $tallas[0] ?>">
-				<a href="#" class="boton-tallas"><?= $giatalla ?></a>
+				<!-- <a href="#" class="boton-tallas"><?= $giatalla ?></a> -->
 			</div>
 		<?php endif; ?>
 		<div class="row">
@@ -199,15 +202,21 @@ $availableVariations = $product->get_available_variations();
 				<div class="item-detalle color detalles col-md-6">
 					<span>Color</span>
 					<ul id="list_colors">
-						<?php foreach ($colors as $keyColor => $color) :
+						<?php
+							$firstColor = "";
+							foreach ($colors as $keyColor => $color) :
+
 								$colorProd = caror_explode_color_name($color);
 								$colorName = $colorProd["name"];
 								$colorHex = $colorProd["hex"];
+								if ($firstColor === "") {
+									$firstColor = $colorName;
+								}
 								?>
 							<li class="<?= $keyColor == 0 ? "active" : "" ?>" data-key_color="<?= $colorName ?>" style="background:<?= $colorHex ?>"></li>
 						<?php endforeach; ?>
 					</ul>
-					<input type="hidden" id="key_color_val" value="<?= trim(explode("|", $colors[0])[0]) ?>">
+					<input type="hidden" id="key_color_val" value="<?= $firstColor ?>">
 					<input type="hidden" id="key_variattion_id" value="<?= $availableVariations[0]["variation_id"] ?>">
 				</div>
 
@@ -221,20 +230,20 @@ $availableVariations = $product->get_available_variations();
 
 				<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-color btn-comprar add_action_cart">
 					<div class="loader"></div>
-					<i class="fa fa-shopping-cart"></i><?= $comprar ?>
+					<i class="fa fa-shopping-cart"></i><?= $anadirCarrrito ?>
 				</a>
 				<a href="#" data-idprod="<?= $product->get_id() ?>" class="btn btn-lg btn-comprar add_action_cart go_to_checkout" style="margin-left: 10px;">
 					<div class="loader" style="display: none;"></div>
-					<?= $anadirCarrrito ?>
+					<?= $comprar ?>
 				</a>
 			</div>
 
 		<?php endif; ?>
 		<div class="compartir-producto">
 			<ul>
-				<li><a href="#"><i class="social_facebook"></i></a></li>
-				<li><a href="#"><i class="social_twitter"></i></a></li>
-				<li><a href="#"><i class="social_pinterest"></i></a></li>
+				<li><a class="social_link" href="#" id="social_facebook_link"><i class="social_facebook"></i></a></li>
+				<li><a class="social_link" target="_blank" href="https://twitter.com/intent/tweet?url=<?= esc_url($product->get_permalink()) ?>&text=<?= $product->description ?>" id="social_twitter_link"><i class="social_twitter"></i></a></li>
+				<!-- <li><a class="social_link" href="#" id="social_pinterest_link"><i class="social_pinterest"></i></a></li> -->
 			</ul>
 		</div>
 	</div>

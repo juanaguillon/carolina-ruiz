@@ -1,11 +1,18 @@
 <?php
 
-/** Template Name: Blog */
 get_header();
+
+$currentTax = get_queried_object();
 
 $blogQuery = array(
   "post_type" => "blog",
-  "posts_per_page" => -1
+  "posts_per_page" => -1,
+  "tax_query" => array(
+    array(
+      "taxonomy" => $currentTax->taxomy,
+      "terms" => $currentTax->term_id
+    )
+  )
 );
 
 $wpQueryBlog = new WP_Query($blogQuery);
@@ -37,7 +44,7 @@ if (caror_is_language()) {
           <button type="submit" class="search-button"><i class="icon icon_search"></i></button>
         </form>
       </div> -->
-      <div class="top-post-section">
+      <!-- <div class="top-post-section">
         <span class="tittle"><?= $popular ?></span>
         <ul>
           <?php
@@ -58,7 +65,7 @@ if (caror_is_language()) {
             </li>
           <?php endforeach; ?>
         </ul>
-      </div>
+      </div> -->
       <div class="category-section">
         <span class="tittle"><?= $categorias ?></span>
 

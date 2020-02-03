@@ -49,6 +49,8 @@
 <!-- jQuery Scripts -->
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/imagefill.js"></script>
+<script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/lg.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/gmap3.js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/isotope.pkgd.min.js"></script>
@@ -62,6 +64,7 @@
 
 
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/plugins.js"></script>
+<script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/slick.js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/revolution/js/jquery.themepunch.tools.min.js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/revolution/js/jquery.themepunch.revolution.min.js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/js/rev-slider.js"></script>
