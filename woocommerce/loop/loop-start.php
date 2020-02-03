@@ -37,14 +37,14 @@ if (caror_is_language()) {
 
 	<div class="container-fluid">
 
-		<div class="row heading">
+		<!-- <div class="row heading">
 			<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 				<h2 class="text-center bottom-line"><?= $collection ?></h2>
 				<p class="subheading text-center"><?= $collectionText ?></p>
 			</div>
-		</div>
+		</div> -->
 
-		<div class="category-product-filter">
+		<!-- <div class="category-product-filter">
 			<ul>
 
 				<li><span class="btn iso-filter" data-filter="*"><?= $todo ?></span></li>
@@ -54,12 +54,9 @@ if (caror_is_language()) {
 					<li><span class="btn iso-filter" data-filter=".<?= $cat->slug ?>"><?= $cat->name ?></span></li>
 
 				<?php endforeach; ?>
-
-				<!--<li><span class="btn iso-filter" data-filter=".casual">Casual</span></li>
-				<li><span class="btn iso-filter" data-filter=".elegante">Elegante</span></li>
-				<li><span class="btn iso-filter" data-filter=".noche">Noche</span></li> -->
+			
 			</ul>
-		</div>
+		</div> -->
 
 		<div class="grid-4-col grid grid-wide grid-gutter">
 

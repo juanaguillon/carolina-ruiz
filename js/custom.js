@@ -53,22 +53,40 @@ function initPlugins() {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
-          vertical:false
+          vertical: false,
+          focusOnSelect: false,
+          centerMode: false
         }
       }
+      // {
+      //   breakpoint: 641,
+      //   settings: {
+      //     slidesToShow: 3,
+      //     slidesToScroll: 1,
+      //     vertical:false
+      //   }
+      // }
     ]
   });
   $(".carousel-inner_product").slick({
     slidesToShow: 1,
     slidesToScroll: 1,
     asNavFor: ".lista-imagenes-carousel",
-    arrows: false
+    arrows: false,
+    // responsive: [
+    //   {
+    //     breakpoint: 768,
+    //     settings: {
+    //       draggable: false,
+    //     }
+    //   }
+    // ]
   });
 
   $(".image-slider-container").imagefill();
   $(".carousel-inner_product").lightGallery({
     selector: ".image-slider-container"
-  }); 
+  });
 }
 
 $(".category-product-filter ul li span").click(function() {

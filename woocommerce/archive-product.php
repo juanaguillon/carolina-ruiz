@@ -21,23 +21,33 @@ defined('ABSPATH') || exit;
 get_header('shop');
 
 ?>
-	<?php
+<?php
 
 
-	/**
-	 * Hook: woocommerce_before_main_content.
-	 *
-	 * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
-	 * @hooked woocommerce_breadcrumb - 20
-	 * @hooked WC_Structured_Data::generate_website_data() - 30
-	 */
+/**
+ * Hook: woocommerce_before_main_content.
+ *
+ * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
+ * @hooked woocommerce_breadcrumb - 20
+ * @hooked WC_Structured_Data::generate_website_data() - 30
+ */
 
-	remove_all_actions("woocommerce_before_main_content");
+remove_all_actions("woocommerce_before_main_content");
 
-	add_action("woocommerce_before_main_content", "woocommerce_output_content_wrapper");
-	do_action('woocommerce_before_main_content');
-	?>
 
+add_action("woocommerce_before_main_content", "woocommerce_output_content_wrapper");
+do_action('woocommerce_before_main_content');
+$currentCat = get_queried_object();
+$textCat = "Currently category:";
+if (caror_is_language("es")){
+	$textCat = "Categoría actual:";
+}
+?>
+<div class="row">
+	<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+		<h4 class="text-center bottom-line"><?= $textCat ?> <?= $currentCat->name ?></h4>
+	</div>
+</div>
 <?php
 
 if (woocommerce_product_loop()) {
