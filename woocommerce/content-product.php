@@ -52,41 +52,52 @@ foreach ($materials as $term) {
 ?>
 
 <div data-newer="<?= caror_is_language() ? "Nuevo" : "New" ?>" class="work-item grid-item nuevo<?php echo $product_cat_id; ?>">
-<a href="<?php echo esc_url($product->get_permalink()); ?>" >
-	<div class="work-img">
+	<a href="<?php echo esc_url($product->get_permalink()); ?>">
+		<div class="work-img">
 
-		<?php
-		$post_thumbnail_id = $product->get_image_id();
-		if ($product->get_image_id()) {
-			printf("<img src='%s' >", wp_get_attachment_image_url($post_thumbnail_id, "large"));
-		} else {
-			echo sprintf('<img src="%s" alt="%s" class="wp-post-image" />', esc_url(wc_placeholder_img_src('woocommerce_single')), esc_html__('Awaiting product image', 'woocommerce'));
-		}
+			<?php
+			$post_thumbnail_id = $product->get_image_id();
+			if ($product->get_image_id()) {
+				printf("<img src='%s' >", wp_get_attachment_image_url($post_thumbnail_id, "large"));
+			} else {
+				echo sprintf('<img src="%s" alt="%s" class="wp-post-image" />', esc_url(wc_placeholder_img_src('woocommerce_single')), esc_html__('Awaiting product image', 'woocommerce'));
+			}
 
 
-		if (caror_is_language()) {
-			$verProducto = "Ver Producto";
-			$buyProd = "Comprar";
-		} else {
-			$verProducto = "See Product";
-			$buyProd = "Buy";
-		}
+			if (caror_is_language()) {
+				$verProducto = "Ver Producto";
+				$buyProd = "Comprar";
+			} else {
+				$verProducto = "See Product";
+				$buyProd = "Buy";
+			}
 
-		?>
+			?>
 
-		<div class="work-overlay">
-			<div class="work-description">
+			<div class="work-overlay">
+				<div class="work-description">
+				</div>
+				<span class="btn btn-lg btn-transparent"><?= $verProducto ?></span>
 			</div>
-			<span class="btn btn-lg btn-transparent"><?= $verProducto ?></span>
 		</div>
-	</div>
-</a>
+	</a>
 	<div class="nombre-producto">
 		<h4><?php echo wp_kses_post($product->get_name()); ?></h4>
-		<?php
-		$price = getVariationProduct($product);
-		?>
-		<span class="valor-precio-2 text-center"><?php echo $price["regular"] ?></span>
+		<div class="product_price_thum">
+			<?php
+			$price = getVariationProduct($product)["regular"];
+			$sale = getVariationProduct($product)["sale"];
+			?>
+
+			<?php if ($sale == "$0") : ?>
+				<span class="valor-precio-2 text-center"><?php echo $price ?></span>
+			<?php else : ?>
+				<span class="valor-precio-2 normal text-center"><?php echo $price ?></span>
+				<span class="valor-precio-2 text-center"><?php echo $sale ?></span>
+			<?php endif; ?>
+
+		</div>
+
 
 		<a href="<?php echo esc_url($product->get_permalink()); ?>" class="btn btn-color btn-comprar-prdt"><?= $buyProd ?></a>
 	</div>

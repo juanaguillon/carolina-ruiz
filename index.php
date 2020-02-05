@@ -16,12 +16,12 @@
 
         $banners = $bannersQuery->posts;
 
-        foreach ($banners as $banner) : 
+        foreach ($banners as $banner) :
           $imgCrop = get_field("imagen_de_banner", $banner)["url"];
-          
+
         ?>
-        
-        
+
+
           <li data-fstransition="fade" data-transition="zoomout" data-easein="default" data-easeout="default" data-slotamount="1" data-masterspeed="1200" data-delay="8000" data-title="<?= $banner->post_title ?>">
             <!-- MAIN IMAGE -->
             <img src="<?= $imgCrop ?>" data-bgrepeat="no-repeat" data-bgfit="cover" data-bgparallax="7" class="rev-slidebg">
@@ -30,13 +30,23 @@
             <div class="tp-caption medium_text" data-x="left" data-y="center" data-voffset="40" data-transform_idle="o:1;s:1000" data-transform_in="x:0;y:200;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;s:500;" data-transform_out="opacity:0;s:1000;e:Power3.easeInOut;" data-start="1000">
               <div class="texto-banner">
                 <h2><?= $banner->post_title ?></h2>
-                <?php 
-                $tienda = "Ver tienda";
-                if ( caror_is_language("en")){
-                  $tienda = "See shop";
+                <?php
+                $linkBanner = get_field("url_de_boton_banner", $banner);
+                $textoBanner = get_field("texto_de_boton_banner", $banner);
+
+                if (empty($linkBanner)) {
+                  $linkBanner = get_permalink(woocommerce_get_page_id('shop'));
                 }
-                 ?>
-                <a href="<?= get_permalink(woocommerce_get_page_id('shop')) ?>" class="btn btn-lg btn-transparent"><?= $tienda ?></a>
+                if (empty($textoBanner)) {
+                  if (caror_is_language("es") ){
+                    $textoBanner = "Ver tienda";
+                  }else{
+                    $textoBanner = "See shop";
+                  }
+                  
+                }
+                ?>
+                <a href="<?= $linkBanner ?>" class="btn btn-lg btn-transparent"><?= $textoBanner ?></a>
               </div>
               <div>
 
@@ -72,7 +82,7 @@
 
           <?php
           if (caror_is_language("es")) :
-            ?>
+          ?>
             <div class="col-md-6 promo-description">
               <p class="subheading">Carolina Ruíz</p>
               <h3 class="color-white">Mi Biografía</h3>
@@ -97,7 +107,7 @@
 
           <?php
           else :
-            ?>
+          ?>
             <div class="col-md-6 promo-description">
               <p class="subheading">Carolina Ruíz</p>
               <h3 class="color-white">My Biography</h3>

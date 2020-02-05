@@ -51,7 +51,7 @@ $availableVariations = $product->get_available_variations();
 						<div class="item lista-imagenes-carousel">
 							<?php if ($imageID = $product->get_image_id()) : ?>
 								<div data-target="#carousel" data-slide-to="0" class="thumb">
-									<img  src="<?php echo wp_get_attachment_image_url($imageID, "thumbnail"); ?>">
+									<img src="<?php echo wp_get_attachment_image_url($imageID, "thumbnail"); ?>">
 								</div>
 							<?php endif; ?>
 
@@ -59,7 +59,7 @@ $availableVariations = $product->get_available_variations();
 							$attachment_ids = $product->get_gallery_image_ids();
 							if ($attachment_ids) :
 								foreach ($attachment_ids as $attKey => $attachment_id) :
-									?>
+							?>
 									<div data-target="#carousel" data-slide-to="<?= $attKey + 1 ?>" class="thumb">
 										<img src="<?php echo  wp_get_attachment_image_url($attachment_id, "thumbnail"); ?>">
 									</div>
@@ -83,7 +83,7 @@ $availableVariations = $product->get_available_variations();
 				<?php if ($imageID = $product->get_image_id()) : ?>
 					<div class="item active">
 						<div data-src="<?php echo wp_get_attachment_image_url($imageID, "full"); ?>" class="image-slider-container">
-							<img  src="<?php echo  wp_get_attachment_image_url($imageID, "large"); ?>">
+							<img src="<?php echo  wp_get_attachment_image_url($imageID, "large"); ?>">
 						</div>
 					</div>
 				<?php endif; ?>
@@ -93,10 +93,10 @@ $availableVariations = $product->get_available_variations();
 				if ($attachment_ids) :
 					$first = true;
 					foreach ($attachment_ids as $attachment_id) :
-						?>
+				?>
 						<div class="item">
 							<div data-src="<?php echo  wp_get_attachment_image_url($attachment_id, "full"); ?>" class="image-slider-container">
-								<img  src="<?php echo  wp_get_attachment_image_url($attachment_id, "large"); ?>">
+								<img src="<?php echo  wp_get_attachment_image_url($attachment_id, "large"); ?>">
 							</div>
 						</div>
 				<?php
@@ -130,10 +130,19 @@ $availableVariations = $product->get_available_variations();
 		<h2><?php echo $product->get_title(); ?></h2>
 		<div class="referencia item-detalle m-0">
 			<span>Ref:</span><span> <?php echo $product->get_sku() ?></span>
-
+			<p><?= $product->short_description ?></p>
 		</div>
 		<div class="precio item-detalle">
-			<span class="valor-precio"><?php echo getVariationProduct($product)["regular"]; ?></span>
+			<?php
+			$sale = getVariationProduct($product)["sale"];
+			$regular = getVariationProduct($product)["regular"];
+			if ($sale === "$0") : ?>
+				<span class="valor-precio"><?= $regular ?></span>
+			<?php else : ?>
+				<span class="valor-precio normal"><?= $regular ?></span>
+				<span class="valor-precio"><?= $sale ?></span>
+			<?php endif; ?>
+
 			<?php
 			$quantityProduct = $product->get_stock_quantity();
 			if ($quantityProduct === null) : ?>
@@ -177,7 +186,7 @@ $availableVariations = $product->get_available_variations();
 				<ul id="list_tallas">
 
 					<?php foreach ($tallas as $tkey => $talla) : ?>
-						<li><a class="<?= $tkey == 0 ? "active" : "" ?>" href="#" data-key_talla="<?= $talla ?>"><?= $talla ?></a></li>
+						<li><a class="<?= $tkey == 0 ? "active" : "" ?>" href="#" data-key_talla="<?=  $talla ?>"><?= strtoupper($talla) ?></a></li>
 					<?php endforeach; ?>
 				</ul>
 				<input type="hidden" id="key_talla_val" value="<?= $tallas[0] ?>">
@@ -203,16 +212,16 @@ $availableVariations = $product->get_available_variations();
 					<span>Color</span>
 					<ul id="list_colors">
 						<?php
-							$firstColor = "";
-							foreach ($colors as $keyColor => $color) :
+						$firstColor = "";
+						foreach ($colors as $keyColor => $color) :
 
-								$colorProd = caror_explode_color_name($color);
-								$colorName = $colorProd["name"];
-								$colorHex = $colorProd["hex"];
-								if ($firstColor === "") {
-									$firstColor = $colorName;
-								}
-								?>
+							$colorProd = caror_explode_color_name($color);
+							$colorName = $colorProd["name"];
+							$colorHex = $colorProd["hex"];
+							if ($firstColor === "") {
+								$firstColor = $colorName;
+							}
+						?>
 							<li class="<?= $keyColor == 0 ? "active" : "" ?>" data-key_color="<?= $colorName ?>" style="background:<?= $colorHex ?>"></li>
 						<?php endforeach; ?>
 					</ul>
